@@ -3,6 +3,15 @@
 easypackages::libraries("rvest", "dplyr", "purrr", "testthat", 'stringr')
 url <- "https://www.churchofjesuschrist.org/study/general-conference/2021/04/49nelson?lang=eng"
 
+#' Title
+#'
+#' @param html_document 
+#' @param element 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 extract_element <- function(html_document, element) {
   #' extract a single element
   #'
@@ -28,7 +37,7 @@ extract_metadata <- function(html_document) {
     rename_all(~ str_replace(., fixed('#'), ""))
 }
 
-process_url <- function(url){
+scrape_talk <- function(url){
   html_document <- read_html(url)
   
   df_metadata <- html_document %>%
