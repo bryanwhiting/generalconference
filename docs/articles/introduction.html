@@ -85,6 +85,7 @@
 
     
     
+<p>The data structure includes the metadata of the talk with a nested dataframe with the paragraphs of the text.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">generalconference</span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: rvest</span>
@@ -106,6 +107,24 @@
 <span class="co">#&gt;   url            title1      author1    author2       kicker1         paragraphs</span>
 <span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;         &lt;chr&gt;           &lt;list&gt;    </span>
 <span class="co">#&gt; 1 https://www.c… Christ Is … By Presid… President of… Faith in Jesus… &lt;tibble […</span></code></pre></div>
+<p>Simply unnest the paragraphs column to get all paragraphs for a talk:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">scrape_talk</span><span class="op">(</span><span class="va">url</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span><span class="va">paragraphs</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 33 × 8</span>
+<span class="co">#&gt;    url        title1    author1  author2    kicker1    paragraph text      p_id </span>
+<span class="co">#&gt;    &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;          &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;</span>
+<span class="co">#&gt;  1 https://w… Christ I… By Pres… President… Faith in …         1 My dear … p1   </span>
+<span class="co">#&gt;  2 https://w… Christ I… By Pres… President… Faith in …         2 During t… p3   </span>
+<span class="co">#&gt;  3 https://w… Christ I… By Pres… President… Faith in …         3 This mor… p4   </span>
+<span class="co">#&gt;  4 https://w… Christ I… By Pres… President… Faith in …         4 Thankful… p5   </span>
+<span class="co">#&gt;  5 https://w… Christ I… By Pres… President… Faith in …         5 Each of … p6   </span>
+<span class="co">#&gt;  6 https://w… Christ I… By Pres… President… Faith in …         6 Faith in… p9   </span>
+<span class="co">#&gt;  7 https://w… Christ I… By Pres… President… Faith in …         7 Everythi… p10  </span>
+<span class="co">#&gt;  8 https://w… Christ I… By Pres… President… Faith in …         8 “Deny no… p11  </span>
+<span class="co">#&gt;  9 https://w… Christ I… By Pres… President… Faith in …         9 And yet,… p12  </span>
+<span class="co">#&gt; 10 https://w… Christ I… By Pres… President… Faith in …        10 Alma ask… p13  </span>
+<span class="co">#&gt; # … with 23 more rows</span></code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
