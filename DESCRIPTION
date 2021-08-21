@@ -1,11 +1,20 @@
 Package: generalconference
 Type: Package
-Title: What the Package Does (Title Case)
+Title: General Conference text corpus and web scrapers
 Version: 0.1.0
 Author: Bryan Whiting
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Maintainer: Bryan Whiting <yourself@somewhere.net>
+Description: "General conference is the worldwide gathering of The Church of 
+    Jesus Christ of Latter-day Saints. Twice a year, during the first weekend of
+    April and the first weekend of October, Church leaders from around the world
+    share messages or sermons focused on the living Christ and His gospel. 
+    Viewers learn how to find peace, hope, and joy in Jesus Christ; 
+    how to strengthen families by following Jesus’s teachings; and how to 
+    receive personal guidance and inspiration from God." 
+    [General Conference](https://www.churchofjesuschrist.org/learn/general-conference)
+    This package is _not_ affiliated with or maintained by The Church of Jesus 
+    Christ of Latter-day Saints. Any opinions or views expressed in this 
+    package and its development reflect those of the authors.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -20,3 +29,5 @@ Depends:
     purrr,
     stringr
 Config/testthat/edition: 3
+Imports: 
+    tidyr

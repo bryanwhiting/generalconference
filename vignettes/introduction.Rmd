@@ -14,9 +14,18 @@ knitr::opts_chunk$set(
 )
 ```
 
+The data structure includes the metadata of the talk with a nested dataframe 
+with the paragraphs of the text.
+
 ```{r setup}
 library(generalconference)
 
 url <- "https://www.churchofjesuschrist.org/study/general-conference/2021/04/49nelson?lang=eng"
 scrape_talk(url)
 ```
+Simply unnest the paragraphs column to get all paragraphs for a talk:
+```{r}
+scrape_talk(url) %>%
+  tidyr::unnest(paragraphs)
+```
+
