@@ -132,7 +132,7 @@
       <tr>
         <th colspan="2">
           <h2 id="section-scrape" class="hasAnchor"><a href="#section-scrape" class="anchor"></a>Scrape</h2>
-          <p class="section-desc"><p>Scrape general conference talks urls and contents</p></p>
+          <p class="section-desc"><p>Scrape general conference talks urls and contents. Any function with <code>scrape</code> as a prefix will execute an rvest::read_html() call (e.g., visit the web page).</p></p>
         </th>
       </tr>
       
@@ -140,7 +140,77 @@
     </tbody><tbody>
       
       
+      <tr>
+        
+        <td>
+          <p><code><a href="scrape_conference_html_doc_map.html">scrape_conference_html_doc_map()</a></code> </p>
+        </td>
+        <td><p>Scrape HTML doc map from Conference URL
+Given a year and a month, pull the entire .doc-map class
+object from the Conference URL. This will be parsed
+by downstream objects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="scrape_conference_urls.html">scrape_conference_urls()</a></code> </p>
+        </td>
+        <td><p>Main function to scrape all conference talk urls
+For a given year-month conference, return a nested tibble of all sessions
+with a tibble-column containing the dataframes</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="scrape_talk.html">scrape_talk()</a></code> </p>
+        </td>
+        <td><p>Scrape general conference talk</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-utilities" class="hasAnchor"><a href="#section-utilities" class="anchor"></a>Utilities</h2>
+          <p class="section-desc"><p><code>extract_*()</code> funcitons will pull html content out of an rvest::read_html() document. <code>parse_*()</code> will manipulate strings, etc. and don’t require a read_html() document.</p></p>
+        </th>
+      </tr>
       
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="extract_element.html">extract_element()</a></code> </p>
+        </td>
+        <td><p>Extract html document elements</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="extract_metadata.html">extract_metadata()</a></code> </p>
+        </td>
+        <td><p>Extract title, author, and kicker from a url and return as a row in a
+dataframe.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="extract_session_hrefs.html">extract_session_hrefs()</a></code> </p>
+        </td>
+        <td><p>Extract Session hrefs</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="parse_path_for_name.html">parse_path_for_name()</a></code> </p>
+        </td>
+        <td><p>Parse path for name</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="parse_session_urls.html">parse_session_urls()</a></code> </p>
+        </td>
+        <td><p>Parse Session URLs
+Take a vector of session hrefs, use the first value
+as the session name, then the other values as the
+session talks</p></td>
+      </tr>
     </tbody>
     </table>
   </div>

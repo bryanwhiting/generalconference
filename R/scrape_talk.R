@@ -1,25 +1,12 @@
 #' Extract html document elements
 #'
-#' @param html_document
-#' @param element
+#' rvest::read_html("https://www.churchofjesuschrist.org/study/general-conference/1971/04/kingdom-of-god?lang=eng") %>% extract_element("#title1")
+#'
+#' @param html_document rvest::read_html() document
+#' @param element class you want to extract (use Selector Gadget)
 #'
 #' @return dataframe
-#'
-#' @examples
-#'
-#' extract_metadata("#title1")
-#'
-#' html_document %>%
-#'   html_element("#title1") %>%
-#'   html_text2()
 extract_element <- function(html_document, element) {
-  #' extract a single element
-  #'
-  #' html_document %>% html_element("#title1") %>% html_text2()
-  #'
-  #' or
-  #'
-  #' extract_metadata('#title1')
 
   html_document %>%
     html_element(element) %>%
@@ -31,14 +18,14 @@ extract_element <- function(html_document, element) {
 extract_metadata <- function(html_document, url) {
   #' Extract title, author, and kicker from a url and return as a row in a
   #' dataframe.
-  
+
   # the .body-block contains the speech text. But the #p anchors
   # can be wrong.
   # returns list of p1, p2, p3... for new talks and p2, p3, p4 for old talks
   p_bodies <- html_document %>%
     html_elements(".body-block p") %>%
     html_attr('id')
-  
+
   if (p_bodies[1] == "p1") {
     # In new talks, #p1 is the paragraph text
     elements <- c("#title1", "#author1", "#author2", "#kicker1")
@@ -50,7 +37,7 @@ extract_metadata <- function(html_document, url) {
     elements <- c("#title1", "#author1", "#author2", "#kicker1", "#p1")
     df <- map_dfc(elements, ~ extract_element(html_document = html_document, element = .)) %>%
       rename_all(~ str_replace(., fixed("#"), ""))
-    
+
     if (is.na(df$author1)) {
       df$author1 <- df$p1
     } else {
@@ -64,14 +51,14 @@ extract_metadata <- function(html_document, url) {
 }
 
 #' Scrape general conference talk
-#' 
+#'
 #' @param url general conference https
 #' @return dataframe
 #'
 #' @export
 scrape_talk <- function(url) {
   # TODO: figure out a way to link in footnotes
-  # url = 
+  # url =
   # url <- 'https://www.churchofjesuschrist.org/study/general-conference/1971/04/out-of-the-darkness'
   html_document <- rvest::read_html(url)
 
@@ -83,15 +70,15 @@ scrape_talk <- function(url) {
   # .body-block specifies the text of the talk
   # in older talks, it starts with #p2 as #p1 is the author
   html_paragraphs <- html_document %>%
-    html_elements(".body-block p") 
-  
+    html_elements(".body-block p")
+
   # storing the paragraph IDs to make url linking to quotes
   # more
   p_ids <- html_paragraphs %>%
     html_attr('id')
-  
+
   df_paragraphs <- html_paragraphs %>%
-    map_df(~ c(text = toString(.))) %>% 
+    map_df(~ c(text = toString(.))) %>%
     mutate(
       text =
         str_replace_all(text,

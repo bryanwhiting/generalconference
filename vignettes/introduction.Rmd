@@ -2,7 +2,7 @@
 title: "Introduction"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{introduction}
+  %\VignetteIndexEntry{Introduction}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 The data structure includes the metadata of the talk with a nested dataframe 
 with the paragraphs of the text.
 
+# Scrape a given talk
 ```{r setup}
 library(generalconference)
 
@@ -28,4 +29,26 @@ Simply unnest the paragraphs column to get all paragraphs for a talk:
 scrape_talk(url) %>%
   tidyr::unnest(paragraphs)
 ```
+
+# Conference URLs
+
+Pull all conference URLs for April, 1971:
+```{r}
+df_conference <- scrape_conference_urls(1971, 4)
+df_conference
+```
+Unnest to see sessions
+```{r}
+df_conference %>%
+  unnest(sessions)
+```
+
+Unnest to see the individual talk urls:
+```{r}
+df_conference %>%
+  unnest(sessions) %>%
+  unnest(session_talk_urls)
+```
+
+
 

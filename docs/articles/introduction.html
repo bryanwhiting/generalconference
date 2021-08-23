@@ -86,9 +86,11 @@
     
     
 <p>The data structure includes the metadata of the talk with a nested dataframe with the paragraphs of the text.</p>
+<div id="scrape-a-given-talk" class="section level1">
+<h1 class="hasAnchor">
+<a href="#scrape-a-given-talk" class="anchor"></a>Scrape a given talk</h1>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">generalconference</span><span class="op">)</span>
-<span class="co">#&gt; Loading required package: rvest</span>
 <span class="co">#&gt; Loading required package: dplyr</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'dplyr'</span>
@@ -98,18 +100,26 @@
 <span class="co">#&gt; The following objects are masked from 'package:base':</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;     intersect, setdiff, setequal, union</span>
+<span class="co">#&gt; Loading required package: glue</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'glue'</span>
+<span class="co">#&gt; The following object is masked from 'package:dplyr':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     collapse</span>
 <span class="co">#&gt; Loading required package: purrr</span>
 <span class="co">#&gt; Loading required package: stringr</span>
+<span class="co">#&gt; Loading required package: rvest</span>
+<span class="co">#&gt; Loading required package: tidyr</span>
 
 <span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"https://www.churchofjesuschrist.org/study/general-conference/2021/04/49nelson?lang=eng"</span>
-<span class="fu">scrape_talk</span><span class="op">(</span><span class="va">url</span><span class="op">)</span>
+<span class="fu"><a href="../reference/scrape_talk.html">scrape_talk</a></span><span class="op">(</span><span class="va">url</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 1 × 6</span>
 <span class="co">#&gt;   url            title1      author1    author2       kicker1         paragraphs</span>
 <span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;         &lt;chr&gt;           &lt;list&gt;    </span>
 <span class="co">#&gt; 1 https://www.c… Christ Is … By Presid… President of… Faith in Jesus… &lt;tibble […</span></code></pre></div>
 <p>Simply unnest the paragraphs column to get all paragraphs for a talk:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">scrape_talk</span><span class="op">(</span><span class="va">url</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="fu"><a href="../reference/scrape_talk.html">scrape_talk</a></span><span class="op">(</span><span class="va">url</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span><span class="va">paragraphs</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 33 × 8</span>
 <span class="co">#&gt;    url        title1    author1  author2    kicker1    paragraph text      p_id </span>
@@ -125,11 +135,59 @@
 <span class="co">#&gt;  9 https://w… Christ I… By Pres… President… Faith in …         9 And yet,… p12  </span>
 <span class="co">#&gt; 10 https://w… Christ I… By Pres… President… Faith in …        10 Alma ask… p13  </span>
 <span class="co">#&gt; # … with 23 more rows</span></code></pre></div>
+</div>
+<div id="conference-urls" class="section level1">
+<h1 class="hasAnchor">
+<a href="#conference-urls" class="anchor"></a>Conference URLs</h1>
+<p>Pull all conference URLs for April, 1971:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">df_conference</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/scrape_conference_urls.html">scrape_conference_urls</a></span><span class="op">(</span><span class="fl">1971</span>, <span class="fl">4</span><span class="op">)</span>
+<span class="va">df_conference</span>
+<span class="co">#&gt; # A tibble: 1 × 3</span>
+<span class="co">#&gt;    year month sessions        </span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;list&gt;          </span>
+<span class="co">#&gt; 1  1971     4 &lt;tibble [7 × 4]&gt;</span></code></pre></div>
+<p>Unnest to see sessions</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">df_conference</span> <span class="op">%&gt;%</span>
+  <span class="fu">unnest</span><span class="op">(</span><span class="va">sessions</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 7 × 6</span>
+<span class="co">#&gt;    year month session_name               session_id session_url session_talk_ur…</span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;                           &lt;int&gt; &lt;chr&gt;       &lt;list&gt;          </span>
+<span class="co">#&gt; 1  1971     4 Saturday Morning Session            1 /study/gen… &lt;tibble [4 × 2]&gt;</span>
+<span class="co">#&gt; 2  1971     4 Saturday Afternoon Session          2 /study/gen… &lt;tibble [7 × 2]&gt;</span>
+<span class="co">#&gt; 3  1971     4 Priesthood Session                  3 /study/gen… &lt;tibble [7 × 2]&gt;</span>
+<span class="co">#&gt; 4  1971     4 Sunday Morning Session              4 /study/gen… &lt;tibble [5 × 2]&gt;</span>
+<span class="co">#&gt; 5  1971     4 Sunday Afternoon Session            5 /study/gen… &lt;tibble [7 × 2]&gt;</span>
+<span class="co">#&gt; 6  1971     4 Tuesday Morning Session             6 /study/gen… &lt;tibble [5 × 2]&gt;</span>
+<span class="co">#&gt; 7  1971     4 Tuesday Afternoon Session           7 /study/gen… &lt;tibble [7 × 2]&gt;</span></code></pre></div>
+<p>Unnest to see the individual talk urls:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">df_conference</span> <span class="op">%&gt;%</span>
+  <span class="fu">unnest</span><span class="op">(</span><span class="va">sessions</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">unnest</span><span class="op">(</span><span class="va">session_talk_urls</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 42 × 7</span>
+<span class="co">#&gt;     year month session_name  session_id session_url  talk_urls   talk_session_id</span>
+<span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;              &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;                 &lt;int&gt;</span>
+<span class="co">#&gt;  1  1971     4 Saturday Mor…          1 /study/gene… /study/gen…               1</span>
+<span class="co">#&gt;  2  1971     4 Saturday Mor…          1 /study/gene… /study/gen…               2</span>
+<span class="co">#&gt;  3  1971     4 Saturday Mor…          1 /study/gene… /study/gen…               3</span>
+<span class="co">#&gt;  4  1971     4 Saturday Mor…          1 /study/gene… /study/gen…               4</span>
+<span class="co">#&gt;  5  1971     4 Saturday Aft…          2 /study/gene… /study/gen…               1</span>
+<span class="co">#&gt;  6  1971     4 Saturday Aft…          2 /study/gene… /study/gen…               2</span>
+<span class="co">#&gt;  7  1971     4 Saturday Aft…          2 /study/gene… /study/gen…               3</span>
+<span class="co">#&gt;  8  1971     4 Saturday Aft…          2 /study/gene… /study/gen…               4</span>
+<span class="co">#&gt;  9  1971     4 Saturday Aft…          2 /study/gene… /study/gen…               5</span>
+<span class="co">#&gt; 10  1971     4 Saturday Aft…          2 /study/gene… /study/gen…               6</span>
+<span class="co">#&gt; # … with 32 more rows</span></code></pre></div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 

@@ -2,10 +2,24 @@
 template:
   params:
     bootswatch: cerulean
-    
+
 reference:
 - title: Scrape
-  desc:  Scrape general conference talks urls and contents
+  desc: >
+    Scrape general conference talks urls and contents. Any function with
+    `scrape` as a prefix will execute an rvest::read_html() call (e.g.,
+    visit the web page).
 - contents:
   - starts_with("scrape_")
+
+- title: Utilities
+  desc: >
+    `extract_*()` funcitons will pull html content out of an rvest::read_html()
+    document.
+
+    `parse_*()` will manipulate strings, etc. and don't require a read_html()
+    document.
+- contents:
+  - starts_with("extract")
+  - starts_with("parse")
 

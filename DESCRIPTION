@@ -23,11 +23,19 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
-Depends: 
-    rvest,
-    dplyr,
-    purrr,
-    stringr
-Config/testthat/edition: 3
 Imports: 
+    dplyr,
+    glue,
+    purrr,
+    stringr,
+    rvest,
     tidyr
+Depends: 
+    dplyr,
+    glue,
+    purrr,
+    stringr,
+    rvest,
+    tidyr
+Config/testthat/edition: 3
+RoxygenNote: 7.1.1

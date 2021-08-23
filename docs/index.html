@@ -93,7 +93,7 @@
 <div id="developer-notes" class="section level1">
 <h1 class="hasAnchor">
 <a href="#developer-notes" class="anchor"></a>Developer notes</h1>
-<p>Building a package: <a href="https://r-pkgs.org/vignettes.html" class="uri">https://r-pkgs.org/vignettes.html</a></p>
+<p>Building a package: <a href="https://r-pkgs.org/vignettes.html" class="uri">https://r-pkgs.org/vignettes.html</a>, <a href="https://fanwangecon.github.io/R4Econ/support/development/fs_packaging.pdf" class="uri">https://fanwangecon.github.io/R4Econ/support/development/fs_packaging.pdf</a></p>
 <ul>
 <li>devtools::create(‘generalconference’)</li>
 <li>devtools::install()</li>
@@ -104,10 +104,20 @@
 <ul>
 <li>usethis::use_r(name=“new_func”): build functions in R and save</li>
 <li>usethis::use_test(name=“new_func”): builds new test</li>
+<li>usethis::use_package(‘xxxx’): Add new package to DESCRIPTION as necessary</li>
 <li>devtools::load_all()</li>
+<li>devtools::test()</li>
+<li>devtools::check(): checks package</li>
+</ul>
+<p>Build documentation:</p>
+<ul>
+<li>Update _pkgdown.yml with documents</li>
+<li>covr::report()</li>
+<li>devtools::document() -&gt; generates NAMESPACE from documentation</li>
+<li>devtools::run_examples()</li>
+<li>devtools::build_vignettes()</li>
 <li>devtools::build()</li>
 <li>pkgdown::build_site()</li>
-<li>devtools::check()</li>
 </ul>
 <p>packages used:</p>
 <ul>
@@ -118,6 +128,24 @@
 <p>Unit tests:</p>
 <ul>
 <li>use_test(“scrape_talk”)</li>
+</ul>
+</div>
+<div id="next-steps" class="section level1">
+<h1 class="hasAnchor">
+<a href="#next-steps" class="anchor"></a>Next steps:</h1>
+<ul class="task-list">
+<li>
+<input type="checkbox" disabled>
+Build loop to extract all URLs from all sessions</li>
+<li>
+<input type="checkbox" disabled>
+Build loop to extract all content from all URLs</li>
+<li>
+<input type="checkbox" disabled>
+Nest data</li>
+<li>
+<input type="checkbox" disabled>
+Test out size of data saveRDS() (or use write_rds and set compression)</li>
 </ul>
 </div>
 
