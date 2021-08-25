@@ -51,3 +51,10 @@ Unit tests:
 - [ ] Test out size of data saveRDS() (or use write_rds and set compression)
 - [ ] Set up code coverage
 - [ ] Set up github actions
+
+
+x <- mtcars %>%
+  select(mpg, disp, am, vs) %>%
+  nest(data = c(vs, c(mpg, disp)))
+
+

@@ -1,0 +1,91 @@
+---
+title: "How To Scrape"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Inspecting XML nodes
+
+```{r}
+rv_doc %>%
+    html_elements('.body-block') %>%
+    html_structure()
+```
+
+
+Explore node 1:
+```{r}
+rv_doc %>%
+  html_elements(".body-block") %>%
+  xml2::xml_child(1)
+```
+Explore node 2:
+```{r}
+rv_doc %>%
+  html_elements(".body-block") %>%
+  xml2::xml_child(2)
+```
+
+```{r}
+  rv_doc %>%
+    html_elements('.body-block') %>%
+    xml_contents()
+
+rv_doc %>%
+    html_elements('.body-block p')
+
+rv_doc %>%
+    html_elements('.body-block') %>%
+    html_children()
+```
+
+Get specific paragraph by id:
+```{r}
+rv_doc %>%
+  html_elements('#p5')
+```
+
+
+Get multiple things at the same time (headers and paragraphs):
+```{r}
+rv_doc %>%
+  html_elements('.body-block h2, .body-block p')
+```
+
+
+# Scratch code
+```{r}
+
+header_ids <- rv_doc %>%
+    html_elements('.body-block h2') %>% html_attr('id')
+  
+  p_ids <- rv_doc %>%
+    html_elements('.body-block p')
+    html_element("#p1")
+  
+  xm_contents <- rv_doc %>%
+    html_elements('.body-block') %>%
+    xml_contents()
+  
+  rv_doc %>%
+    html_elements('.body-block') %>%
+    # html_children() %>%
+    xml_child(1) %>%
+    xml_contents() %>%
+    html_elements('p')
+
+  xm_contents %>%
+    xml_child(1) %>%
+    html_text()
+```
+

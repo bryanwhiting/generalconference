@@ -15,6 +15,79 @@ extract_element <- function(html_document, element) {
     setNames(element) # name the dataframe with the element content
 }
 
+extract_body_paragraphs <- function(html_document) {
+  # .body-block specifies the text of the talk
+  # in older talks, it starts with #p2 as #p1 is the author
+  # in some talks, #p20 is the first: "https://www.churchofjesuschrist.org/study/general-conference/2019/04/27homer"
+  # html_body_paragraphs <- html_document %>%
+  #   html_elements(".body-block p")
+  #
+  # # header is first paragraph, but also an h2
+  # # See "https://www.churchofjesuschrist.org/study/general-conference/2020/04/28stevenson"
+  # html_header_paragraphs <- html_document %>%
+  #   html_elements(".body-block h2")
+  url <- "https://www.churchofjesuschrist.org/study/general-conference/2020/04/28stevenson"
+  url <- "https://www.churchofjesuschrist.org/study/general-conference/1971/04/out-of-the-darkness?lang=eng"
+  # rv = rvest
+  rv_doc <- rvest::read_html(url)
+
+  rv_paragraphs <- rv_doc %>%
+    html_elements('.body-block h2, .body-block p')
+
+  # First determine if there are section headers
+  rv_sections <- rv_doc %>%
+    html_elements('.body-block section')
+  # There are sections for newer talks
+  # TODO(2021-08-25): query section number + title as a column
+  if (length(rv_sections) > 0) {
+    rv_headers <- rv_sections %>%
+      html_elements('h2')
+
+    h_ids <- rv_headers %>%
+      html_attr('id')
+
+    df_headers <- rv_headers %>%
+      html_text2() %>%
+      tibble(
+        paragraph = .,
+             p_id = h_ids,
+        is_header = T)
+  }
+  # Todo: how did I loop through the conference URLs?
+  # Likewise, I can loop through sections
+  rv_paragraphs <- rv_doc %>%
+    html_elements(".body-block p")
+
+  # storing the paragraph IDs to make url linking to quotes easy
+  p_ids <- rv_paragraphs %>%
+    html_attr('id')
+
+  # Remove footnotes
+  df_paragraphs <- rv_paragraphs %>%
+    map_df(~ c(paragraph = toString(.))) %>%
+    mutate(
+      p_id = p_ids,
+      is_header = F,
+      p_num
+      paragraph =
+        str_replace_all(paragraph,
+                        pattern = c(
+                          "<sup.*</sup>" = "",
+                          "<.*?>" = "",
+                          "\n" = ""
+                        )
+        )
+    )
+
+  # don't want to arrange by p_id since p_id is sometimes out of order
+  # ehh...maybe should add a check to see if paragraph is frequently
+  # out of order? If that's just one talk, I can re-work that talk.
+  df_paragraphs %>%
+    bind_rows(df_headers) %>%
+
+
+}
+
 extract_metadata <- function(html_document, url) {
   #' Extract title, author, and kicker from a url and return as a row in a
   #' dataframe.
@@ -26,7 +99,11 @@ extract_metadata <- function(html_document, url) {
     html_elements(".body-block p") %>%
     html_attr('id')
 
-  if (p_bodies[1] == "p1") {
+  # Explaining !("p1" %in% p_bodies):
+  #  Sometimes, the first paragraph isn't p1
+  #  e.g., "https://www.churchofjesuschrist.org/study/general-conference/2019/04/27homer"
+  #  First paragraph is "p20", then 2nd is "p1".
+  if (p_bodies[1] == "p1" | ("p1" %in% p_bodies)) {
     # In new talks, #p1 is the paragraph text
     elements <- c("#title1", "#author1", "#author2", "#kicker1")
     map_dfc(elements, ~ extract_element(html_document = html_document, element = .)) %>%
@@ -41,14 +118,15 @@ extract_metadata <- function(html_document, url) {
     if (is.na(df$author1)) {
       df$author1 <- df$p1
     } else {
-      warning('pulled #p1 for metadata but author1 is not null')
-      print(url)
+      message('pulled #p1 for metadata but author1 is not null: ', url)
     }
     df %>%
       select(-p1) %>%
       return()
   }
 }
+
+
 
 #' Scrape general conference talk
 #'
@@ -67,32 +145,8 @@ scrape_talk <- function(url) {
     mutate(url = url) %>%
     select(url, everything())
 
-  # .body-block specifies the text of the talk
-  # in older talks, it starts with #p2 as #p1 is the author
-  html_paragraphs <- html_document %>%
-    html_elements(".body-block p")
-
-  # storing the paragraph IDs to make url linking to quotes
-  # more
-  p_ids <- html_paragraphs %>%
-    html_attr('id')
-
-  df_paragraphs <- html_paragraphs %>%
-    map_df(~ c(text = toString(.))) %>%
-    mutate(
-      text =
-        str_replace_all(text,
-          pattern = c(
-            "<sup.*</sup>" = "",
-            "<.*?>" = "",
-            "\n" = ""
-          )
-        )
-    ) %>%
-    mutate(
-      paragraph = row_number(),
-      p_id = p_ids) %>%
-    select(paragraph, text, p_id)
+  # Get all paragraphs
+  df_paragraphs <- extract_body_paragraphs(html_document)
 
   # store as a tibble of tibbles.
   # this allows you to have one row per talk.
