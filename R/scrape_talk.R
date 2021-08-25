@@ -14,7 +14,15 @@ extract_element <- function(html_document, element) {
     setNames(element) # name the dataframe with the element content
 }
 
-extract_body_paragraphs_df <- function(rv_document) {
+#' Title
+#'
+#' @param rv_document
+#'
+#' @return
+#' @export
+#'
+#' @examples
+extract_body_paragraphs_df <- function(rv_doc) {
   # .body-block specifies the text of the talk
   # in older talks, it starts with #p2 as #p1 is the author
   # in some talks, #p20 is the first: "https://www.churchofjesuschrist.org/study/general-conference/2019/04/27homer"
@@ -30,7 +38,7 @@ extract_body_paragraphs_df <- function(rv_document) {
   # url <- "https://www.churchofjesuschrist.org/study/general-conference/2019/04/27homer"
   # rv_document <- rvest::read_html(url)
 
-  rv_paragraphs <- rv_document %>%
+  rv_paragraphs <- rv_doc %>%
     # Extract both headers and paragraphs out of body
     html_elements(".body-block h2, .body-block p")
 
@@ -56,14 +64,14 @@ extract_body_paragraphs_df <- function(rv_document) {
     select(section_num, p_num, p_id, is_header, paragraph)
 }
 
-extract_metadata <- function(html_document, url) {
+extract_metadata <- function(rv_doc, url) {
   #' Extract title, author, and kicker from a url and return as a row in a
   #' dataframe.
 
   # the .body-block contains the speech text. But the #p anchors
   # can be wrong.
   # returns list of p1, p2, p3... for new talks and p2, p3, p4 for old talks
-  p_bodies <- html_document %>%
+  p_bodies <- rv_doc %>%
     html_elements(".body-block p") %>%
     html_attr("id")
 
@@ -74,13 +82,13 @@ extract_metadata <- function(html_document, url) {
   if (p_bodies[1] == "p1" | ("p1" %in% p_bodies)) {
     # In new talks, #p1 is the paragraph text
     elements <- c("#title1", "#author1", "#author2", "#kicker1")
-    map_dfc(elements, ~ extract_element(html_document = html_document, element = .)) %>%
+    map_dfc(elements, ~ extract_element(html_document = rv_doc, element = .)) %>%
       rename_all(~ str_replace(., fixed("#"), "")) %>%
       return()
   } else {
     # In older talks, #p1 is the author block
     elements <- c("#title1", "#author1", "#author2", "#kicker1", "#p1")
-    df <- map_dfc(elements, ~ extract_element(html_document = html_document, element = .)) %>%
+    df <- map_dfc(elements, ~ extract_element(html_document = rv_doc, element = .)) %>%
       rename_all(~ str_replace(., fixed("#"), ""))
 
     if (is.na(df$author1)) {
@@ -106,15 +114,15 @@ scrape_talk <- function(url) {
   # TODO: figure out a way to link in footnotes
   # url =
   # url <- 'https://www.churchofjesuschrist.org/study/general-conference/1971/04/out-of-the-darkness'
-  html_document <- rvest::read_html(url)
+  rv_doc <- rvest::read_html(url)
 
-  df_metadata <- html_document %>%
+  df_metadata <- rv_doc %>%
     extract_metadata(., url = url) %>%
     mutate(url = url) %>%
     select(url, everything())
 
   # Get all paragraphs
-  df_paragraphs <- extract_body_paragraphs(html_document)
+  df_paragraphs <- extract_body_paragraphs(rv_doc)
 
   # store as a tibble of tibbles.
   # this allows you to have one row per talk.
