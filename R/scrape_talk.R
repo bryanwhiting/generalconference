@@ -31,8 +31,29 @@ extract_body_paragraphs <- function(html_document) {
   # rv = rvest
   rv_doc <- rvest::read_html(url)
 
+  # Extract both headers and paragraphs out of body
   rv_paragraphs <- rv_doc %>%
     html_elements('.body-block h2, .body-block p')
+
+  rv_paragraphs %>%
+    map_df(~ c(paragraph = toString(.))) %>%
+    mutate(
+      p_id = html_attr(rv_paragraphs, 'id'),
+      is_header = str_detect(paragraph, '^\\<h2'),
+      p_num = row_number(),
+      section_num = cumsum(is_header),
+      # strip out footnotes
+      paragraph =
+        str_replace_all(
+          paragraph,
+                        pattern = c(
+                          "<sup.*</sup>" = "",
+                          "<.*?>" = "",
+                          "\n" = ""
+                        )
+        ) %>%
+        trimws()
+    )
 
   # First determine if there are section headers
   rv_sections <- rv_doc %>%
@@ -68,7 +89,7 @@ extract_body_paragraphs <- function(html_document) {
     mutate(
       p_id = p_ids,
       is_header = F,
-      p_num
+      # p_num
       paragraph =
         str_replace_all(paragraph,
                         pattern = c(
