@@ -121,7 +121,7 @@ scrape_talk <- function(url) {
     select(url, everything())
 
   # Get all paragraphs
-  df_paragraphs <- extract_body_paragraphs(rv_doc)
+  df_paragraphs <- extract_body_paragraphs_df(rv_doc)
 
   # store as a tibble of tibbles.
   # this allows you to have one row per talk.
