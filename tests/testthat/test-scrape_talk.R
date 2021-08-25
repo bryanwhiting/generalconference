@@ -1,17 +1,59 @@
 test_that("extract_metadata() works", {
   # This URL has p20 as first paragraph
   url <- "https://www.churchofjesuschrist.org/study/general-conference/2019/04/27homer"
-  html_doc <- rvest::read_html(url)
-  ans <- extract_metadata(html_doc, url)
+  rv_doc <- rvest::read_html(url)
+  ans <- extract_metadata(rv_doc, url)
   expect_equal(ans$author1, "By Elder David P. Homer")
 
-  # TODO: #h1
   # 2021-08-25: pulled #p1 for metadata but author1 is not null
   # p_bodies for this starts at #p2, because #p1 is an #h1
   # all #h1s are getting skipped
   url <- "https://www.churchofjesuschrist.org/study/general-conference/2020/04/28stevenson"
-  html_doc <- rvest::read_html(url)
-  ans <- extract_metadata(html_doc, url)
+  rv_doc <- rvest::read_html(url)
+  ans <- extract_metadata(rv_doc, url)
+
+  # New talk with p2 as first p
+  url <- "https://www.churchofjesuschrist.org/study/general-conference/2019/10/21eyring"
+  rv_doc <- rvest::read_html(url)
+  ans <- extract_metadata(rv_doc, url)
+
+})
+
+test_that("extract_body_paragraphs_df() works", {
+  # Old url
+  url <- "https://www.churchofjesuschrist.org/study/general-conference/1971/04/out-of-the-darkness?lang=eng"
+  rv_doc <- rvest::read_html(url)
+  ans <- extract_body_paragraphs_df(rv_doc)
+
+  expect_equal(sum(ans$section_num), 0, label = "Old talk has section numbers, shouldn't.")
+  expect_equal(ans$p_id[1], "p2")
+
+  # new URL: p1 is a header. has 4 sections
+  url <- "https://www.churchofjesuschrist.org/study/general-conference/2020/04/28stevenson"
+  rv_doc <- rvest::read_html(url)
+  ans <- extract_body_paragraphs_df(rv_doc)
+  expect_equal(max(ans$section_num), 4)
+  expect_equal(ans$p_id[1], "p1")
+  expect_equal(ans$is_header[1], T)
+
+  # new URL: first paragraph is p20 (someone messed that up)
+  # has multiple sections but they don't start with first p
+  # sections have id=title, not id=p (unlike above url)
+  url <- "https://www.churchofjesuschrist.org/study/general-conference/2019/04/27homer"
+  rv_doc <- rvest::read_html(url)
+  ans <- extract_body_paragraphs_df(rv_doc)
+  expect_equal(ans$p_id[1], 'p20')
+  expect_equal(ans$is_header[1], FALSE)
+  expect_equal(ans$p_id[2], 'p1')
+  expect_equal(ans$p_id[4], 'title2')
+  expect_equal(ans$is_header[4], TRUE)
+  expect_equal(ans$p_id[7], 'title3')
+
+  # new talk, p_id = p2
+  url <- "https://www.churchofjesuschrist.org/study/general-conference/2019/10/21eyring"
+  rv_doc <- rvest::read_html(url)
+  ans <- extract_body_paragraphs_df(rv_doc)
+  expect_equal(ans$p_id[1], 'p2')
 
 })
 
@@ -27,14 +69,13 @@ test_that("scrape_talk() 2021 works", {
 })
 
 test_that("scrape_talk() old talk: lacks #author1, lacks #kicker1", {
-  url <- 'https://www.churchofjesuschrist.org/study/general-conference/1971/04/out-of-the-darkness'
+  url <- "https://www.churchofjesuschrist.org/study/general-conference/1971/04/out-of-the-darkness"
 
   df <- scrape_talk(url)
   expect_equal(df$title1, "Out of the Darkness")
   expect_equal(df$author1, "Joseph Fielding Smith")
   expect_equal(nrow(df$paragraphs[[1]]), 24)
   expect_equal(df$paragraphs[[1]]$p_id[1], "p2")
-
 })
 
 test_that("scrape_talk() old talk, has kicker, lacks author1", {
@@ -45,32 +86,3 @@ test_that("scrape_talk() old talk, has kicker, lacks author1", {
   expect_equal(nrow(df$paragraphs[[1]]), 62)
   expect_equal(df$paragraphs[[1]]$p_id[1], "p2")
 })
-
-
-# talks that had #p1 as metadata
-url <- "https://www.churchofjesuschrist.org/study/general-conference/2019/04/27homer"
-talk <- scrape_talk(url)
-talk$paragraphs
-
-"https://www.churchofjesuschrist.org/study/general-conference/2020/04/28stevenson"
-"https://www.churchofjesuschrist.org/study/general-conference/2019/04/27homer"
-"https://www.churchofjesuschrist.org/study/general-conference/2019/10/21eyring"
-"https://www.churchofjesuschrist.org/study/general-conference/2019/10/24nelson"
-"https://www.churchofjesuschrist.org/study/general-conference/2019/10/43uchtdorf"
-
-
-# Questions: why is it printing out URLs?
-# which ones failed?
-# TODO: rename talk_urls to talk_url_stub
-# rename talk_urls to talk_path and session_url to session_path
-
-x <- read_rds('data/sessions/201904.rds')
-x %>%
-  unnest(sessions) %>%
-  unnest(talks) %>%
-  view()
-
-x <- x %>% unnest(sessions) %>% unnest(talks)
-x %>% filter(str_detect(url, 'homer')) %>%
-  unnest(paragraphs)
-url <- "https://www.churchofjesuschrist.org/study/general-conference/2019/04/27homer"
