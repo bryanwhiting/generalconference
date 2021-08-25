@@ -79,7 +79,7 @@ extract_metadata <- function(rv_doc, url) {
   #  Sometimes, the first paragraph isn't p1
   #  e.g., "https://www.churchofjesuschrist.org/study/general-conference/2019/04/27homer"
   #  First paragraph is "p20", then 2nd is "p1".
-  if (p_bodies[1] == "p1" | ("p1" %in% p_bodies)) {
+  if ("p1" %in% p_bodies) {
     # In new talks, #p1 is the paragraph text
     elements <- c("#title1", "#author1", "#author2", "#kicker1")
     map_dfc(elements, ~ extract_element(html_document = rv_doc, element = .)) %>%
@@ -94,15 +94,14 @@ extract_metadata <- function(rv_doc, url) {
     if (is.na(df$author1)) {
       df$author1 <- df$p1
     } else {
-      message("pulled #p1 for metadata but author1 is not null: ", url)
+      message("#p1 not in .body-block p: ", url,
+              "\nPulled #p1 for metadata but author1 is not null.")
     }
     df %>%
       select(-p1) %>%
       return()
   }
 }
-
-
 
 #' Scrape general conference talk
 #'

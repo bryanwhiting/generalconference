@@ -13,6 +13,8 @@ test_that("extract_metadata() works", {
   ans <- extract_metadata(rv_doc, url)
 
   # New talk with p2 as first p
+  # p1 just isn't in this .body-block but it's also not
+  # in the non-body block.
   url <- "https://www.churchofjesuschrist.org/study/general-conference/2019/10/21eyring"
   rv_doc <- rvest::read_html(url)
   ans <- extract_metadata(rv_doc, url)
