@@ -1,35 +1,49 @@
+read_html <- rvest::read_html
+
+test_that('extract_url_from_rv_doc() works', {
+
+  # video has no metadata
+  url <- "https://www.churchofjesuschrist.org/study/general-conference/2020/10/33video?lang=eng"
+  extract_url_from_rv_doc(rv_doc = read_html(url)) %>%
+    expect_equal(url)
+
+  url <- "https://www.churchofjesuschrist.org/study/general-conference/2019/04/27homer?lang=eng"
+  extract_url_from_rv_doc(rv_doc = read_html(url)) %>%
+    expect_equal(url)
+
+})
+
 test_that("extract_metadata() works", {
   # This URL has p20 as first paragraph
   url <- "https://www.churchofjesuschrist.org/study/general-conference/2019/04/27homer"
   rv_doc <- rvest::read_html(url)
   # should not return mesage
-  ans <- extract_metadata(rv_doc, url)
+  ans <- extract_metadata(rv_doc)
   expect_equal(ans$author1, "By Elder David P. Homer")
-
 
   # New talk with p2 as first p
   # p1 just isn't in this .body-block but it's also not
   # in the non-body block.
   url <- "https://www.churchofjesuschrist.org/study/general-conference/2019/10/21eyring"
   rv_doc <- rvest::read_html(url)
-  expect_message(extract_metadata(rv_doc, url))
+  expect_message(extract_metadata(rv_doc))
 
   # new talk, p2 is first p
   # p1 just isn't in this .body-block. Everything looks good.
   url <- "https://www.churchofjesuschrist.org/study/general-conference/2019/10/24nelson"
   rv_doc <- rvest::read_html(url)
-  expect_message(extract_metadata(rv_doc, url))
+  expect_message(extract_metadata(rv_doc))
 
   # p1 is the header
   # p_bodies for this starts at #p2, because #p1 is an #h1
   # message should be present on this one
   url <- "https://www.churchofjesuschrist.org/study/general-conference/2020/04/28stevenson"
   rv_doc <- rvest::read_html(url)
-  expect_message(extract_metadata(rv_doc, url))
+  expect_message(extract_metadata(rv_doc))
   # p1 is the header
   url <- "https://www.churchofjesuschrist.org/study/general-conference/2019/10/43uchtdorf"
   rv_doc <- rvest::read_html(url)
-  expect_message(extract_metadata(rv_doc, url))
+  expect_message(extract_metadata(rv_doc))
 
   })
 
@@ -68,6 +82,14 @@ test_that("extract_body_paragraphs_df() works", {
   rv_doc <- rvest::read_html(url)
   ans <- extract_body_paragraphs_df(rv_doc)
   expect_equal(ans$p_id[1], 'p2')
+
+})
+
+test_that("extract_body_paragraphs_df() works with urls that have no paragraphs",{
+  # Url has no body:
+  # video has no metadata
+  url <- "https://www.churchofjesuschrist.org/study/general-conference/2020/10/33video?lang=eng"
+  expect_message(extract_body_paragraphs_df(rv_doc = read_html(url)))
 
 })
 

@@ -58,3 +58,13 @@ x <- mtcars %>%
   nest(data = c(vs, c(mpg, disp)))
 
 
+### gh api:
+
+```
+gh issue create --label "bug"
+gh issue list
+gh issue view 4 
+# Todo: parse this and re-submit
+gh issue view 4 --json body
+```
+

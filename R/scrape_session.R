@@ -67,6 +67,11 @@ scrape_conference_talks <- function(year, month) {
     str_replace(fixed('///'), '/')
 
   conference_talks <- future_map_dfr(urls, scrape_talk)
+  # Debug bad urls:
+  # for(u in urls){
+  #   print(u)
+  #   x <- scrape_talk(u)
+  # }
 
   df_conference %>%
     bind_cols(conference_talks) %>%
@@ -74,6 +79,13 @@ scrape_conference_talks <- function(year, month) {
     nest(sessions = c(session_name, session_id, session_url, talks)) %>%
     write_rds(file=glue("data/sessions/{year}{mo_str}.rds"), compress = 'bz2')
 }
+
+# year = 2020
+# month = 10
+# x <- scrape_conference_talks(year, month)
+# write_rds(x, file=glue("data/sessions/{year}{mo_str}.rds"), compress = 'bz2')
+
+
 
 # If there's an error, just skip
 scrape_all_conferences <- function(){

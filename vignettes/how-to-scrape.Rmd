@@ -89,3 +89,10 @@ header_ids <- rv_doc %>%
     html_text()
 ```
 
+Scrape metadata for url
+```{r}
+rv_doc %>%
+    html_elements('head') %>%
+    html_elements('meta')
+```
+

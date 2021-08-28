@@ -1,3 +1,16 @@
+extract_url_from_rv_doc <- function(rv_doc) {
+  meta <- rv_doc %>%
+    html_elements("head") %>%
+    html_elements("meta")
+
+  property <- meta %>%
+    html_attr("property")
+  idx_url <- which(property == "og:url")
+  meta %>%
+    html_attr("content") %>%
+    .[[idx_url]]
+}
+
 #' Extract html document elements
 #'
 #' rvest::read_html("https://www.churchofjesuschrist.org/study/general-conference/1971/04/kingdom-of-god?lang=eng") %>% extract_element("#title1")
@@ -36,12 +49,19 @@ extract_body_paragraphs_df <- function(rv_doc) {
   # url <- "https://www.churchofjesuschrist.org/study/general-conference/2020/04/28stevenson"
   # url <- "https://www.churchofjesuschrist.org/study/general-conference/1971/04/out-of-the-darkness?lang=eng"
   # url <- "https://www.churchofjesuschrist.org/study/general-conference/2019/04/27homer"
-  # rv_document <- rvest::read_html(url)
+  # rv_doc <- rvest::read_html(url)
 
   rv_paragraphs <- rv_doc %>%
     # Extract both headers and paragraphs out of body
     html_elements(".body-block h2, .body-block p")
 
+  if (length(rv_paragraphs) == 0) {
+    url <- extract_url_from_rv_doc(rv_doc)
+    msg <- glue("URL has no paragraphs.Perhaps add to scrape_talk() banned_urls?: [{url}]")
+    message(msg)
+    # stops quietly?: https://stackoverflow.com/a/42945293
+    return()
+  }
   rv_paragraphs %>%
     map_df(~ c(paragraph = toString(.))) %>%
     mutate(
@@ -64,7 +84,7 @@ extract_body_paragraphs_df <- function(rv_doc) {
     select(section_num, p_num, p_id, is_header, paragraph)
 }
 
-extract_metadata <- function(rv_doc, url) {
+extract_metadata <- function(rv_doc) {
   #' Extract title, author, and kicker from a url and return as a row in a
   #' dataframe.
 
@@ -94,8 +114,11 @@ extract_metadata <- function(rv_doc, url) {
     if (is.na(df$author1)) {
       df$author1 <- df$p1
     } else {
-      message("#p1 not in .body-block p: ", url,
-              "\nPulled #p1 for metadata but author1 is not null.")
+      url <- extract_url_from_rv_doc(rv_doc)
+      message(
+        "#p1 not in .body-block p: ", url,
+        "\nPulled #p1 for metadata but author1 is not null."
+      )
     }
     df %>%
       select(-p1) %>%
@@ -111,12 +134,20 @@ extract_metadata <- function(rv_doc, url) {
 #' @export
 scrape_talk <- function(url) {
   # TODO: figure out a way to link in footnotes
-  # url =
   # url <- 'https://www.churchofjesuschrist.org/study/general-conference/1971/04/out-of-the-darkness'
+  banned_urls <- c(
+    # TODO: add bad urls we skip over
+    # REASON: is a video with no paragraphs
+    "https://www.churchofjesuschrist.org/study/general-conference/2020/10/33video"
+  )
+  if (url %in% banned_urls) {
+    return()
+  }
+
   rv_doc <- rvest::read_html(url)
 
   df_metadata <- rv_doc %>%
-    extract_metadata(., url = url) %>%
+    extract_metadata() %>%
     mutate(url = url) %>%
     select(url, everything())
 
