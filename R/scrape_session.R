@@ -64,7 +64,16 @@ print_skipped_urls <- function(all_urls, exported_urls){
   }
 }
 
-scrape_conference_talks <- function(year, month) {
+#' Scrapes all conference talks for a sessions
+#'
+#' For one-off sessions or debugging, see new-sessions.Rmd.
+#'
+#' @param year Year
+#' @param month Month
+#'
+#' @return Writes out session to /data/sessions/<year><month>.rds
+#' @export
+scrape_conference_talks <- function(year, month, path) {
   mo_str = str_pad(month, width=2, pad="0")
   conference <- scrape_conference_urls(year, month)
   df_conference <- conference %>%
@@ -92,38 +101,14 @@ scrape_conference_talks <- function(year, month) {
     nest(talks = c(talk_urls, talk_session_id, url, title1, author1, author2, kicker1, paragraphs)) %>%
     nest(sessions = c(session_name, session_id, session_url, talks)) %>%
     #'bz2' is one type of compression that seemed to perform the best
-    write_rds(file=glue("data/sessions/{year}{mo_str}.rds"), compress = 'bz2')
+    write_rds(file=path, compress = 'bz2')
 }
 
-year = 1971
-month = 10
-scrape_conference_talks(year, month)
-x <- read_rds(glue("data/sessions/{year}{mo_str}.rds"))
-x %>% unnest(sessions) %>% unnest(talks) %>% nrow()
-exported_urls <- x %>%
-  unnest(sessions) %>%
-  unnest(talks) %>%
-  pull(talk_urls)
+# scrapes the talk safely
+scrape_conference_talks_possibly <- possibly(.f=scrape_conference_talks, otherwise=NULL)
 
-raw_urls <- scrape_conference_urls(year, month) %>%
-  unnest(sessions) %>%
-  unnest(session_talk_urls) %>%
-  pull(talk_urls)
-
-for(i in 1:length(raw_urls)){
-  if(!(raw_urls[i] %in% exported_urls)){
-    print(i)
-  }
-}
-
-
-# write_rds(x, file=glue("data/sessions/{year}{mo_str}.rds"), compress = 'bz2')
-
-
-
-# If there's an error, just skip
 scrape_all_conferences <- function(){
-  possibly_scrape <- possibly(.f=scrape_conference_talks, otherwise=NULL)
+  # If there's an error, just skip
 
   tic('all')
   for (year in 2020:1971){
@@ -132,7 +117,9 @@ scrape_all_conferences <- function(){
     for (month in c(4, 10)){
       message(Sys.time(), "|   month:", month)
       tic(month)
-      possibly_scrape(year=year, month=month)
+
+      path = glue("data/sessions/{year}{mo_str}.rds")
+      scrape_conference_talks_possibly(year=year, month=month, path=path)
       mo = str_pad(month, width=2, pad="0")
 
       yearmo = glue("{year}{mo}")
