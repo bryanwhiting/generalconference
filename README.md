@@ -23,6 +23,10 @@ workflow: https://r-pkgs.org/whole-game.html
 * devtools::test()
 * devtools::check(): checks package
 
+Build data folder
+
+* use_this::use_data_raw() - builds data-raw/ folder
+
 Build documentation:
 
 * Update _pkgdown.yml with documents

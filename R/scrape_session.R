@@ -53,14 +53,14 @@
 # SCRAPE
 # TODO: create one scrape of all metadata (no talks)
 #
-url_root = "https://www.churchofjesuschrist.org/"
+url_root <- "https://www.churchofjesuschrist.org/"
 
 
-print_skipped_urls <- function(all_urls, exported_urls){
+print_skipped_urls <- function(all_urls, exported_urls) {
   skipped_urls <- all_urls[!(all_urls %in% exported_urls)]
-  if(length(skipped_urls > 0)){
-    message('The following urls were skipped:')
-    message(paste(skipped_urls, collapse='\n'))
+  if (length(skipped_urls > 0)) {
+    message("The following urls were skipped:")
+    message(paste(skipped_urls, collapse = "\n"))
   }
 }
 
@@ -74,14 +74,14 @@ print_skipped_urls <- function(all_urls, exported_urls){
 #' @return Writes out session to /data/sessions/<year><month>.rds
 #' @export
 scrape_conference_talks <- function(year, month, path) {
-  mo_str = str_pad(month, width=2, pad="0")
+  mo_str <- str_pad(month, width = 2, pad = "0")
   conference <- scrape_conference_urls(year, month)
   df_conference <- conference %>%
     unnest(sessions) %>%
     unnest(session_talk_urls)
 
   urls <- file.path(url_root, df_conference$talk_urls) %>%
-    str_replace(fixed('///'), '/')
+    str_replace(fixed("///"), "/")
 
   conference_talks <- future_map_dfr(urls, scrape_talk)
   # Debug bad urls:
@@ -91,7 +91,7 @@ scrape_conference_talks <- function(year, month, path) {
   # }
   # Print missing conference talks, if any. scrape_talk might skip some urls.
   exported_urls <- conference_talks$url %>%
-    str_replace(url_root, '')
+    str_replace(url_root, "")
   all_urls <- df_conference$talk_urls
   print_skipped_urls(all_urls = all_urls, exported_urls = exported_urls)
 
@@ -100,37 +100,37 @@ scrape_conference_talks <- function(year, month, path) {
     bind_cols(conference_talks) %>%
     nest(talks = c(talk_urls, talk_session_id, url, title1, author1, author2, kicker1, paragraphs)) %>%
     nest(sessions = c(session_name, session_id, session_url, talks)) %>%
-    #'bz2' is one type of compression that seemed to perform the best
-    write_rds(file=path, compress = 'bz2')
+    #' bz2' is one type of compression that seemed to perform the best
+    write_rds(file = path, compress = "bz2")
 }
 
 # scrapes the talk safely
-scrape_conference_talks_possibly <- possibly(.f=scrape_conference_talks, otherwise=NULL)
+scrape_conference_talks_possibly <- possibly(.f = scrape_conference_talks, otherwise = NULL)
 
-scrape_all_conferences <- function(){
+scrape_all_conferences <- function() {
   # If there's an error, just skip
 
-  tic('all')
-  for (year in 2020:1971){
+  tic("all")
+  for (year in 2020:1971) {
     tic(year)
     print(year)
-    for (month in c(4, 10)){
+    for (month in c(4, 10)) {
       message(Sys.time(), "|   month:", month)
       tic(month)
 
-      path = glue("data/sessions/{year}{mo_str}.rds")
-      scrape_conference_talks_possibly(year=year, month=month, path=path)
-      mo = str_pad(month, width=2, pad="0")
+      path <- glue("data/sessions/{year}{mo_str}.rds")
+      scrape_conference_talks_possibly(year = year, month = month, path = path)
+      mo <- str_pad(month, width = 2, pad = "0")
 
-      yearmo = glue("{year}{mo}")
-      path = glue('data/sessions/{yearmo}.rds')
+      yearmo <- glue("{year}{mo}")
+      path <- glue("data/sessions/{yearmo}.rds")
       if (!file.exists(path)) {
         message("error on ", yearmo)
-        write(file='data/sessions/_metadata', path, append=T)
+        write(file = "data/sessions/_metadata", path, append = T)
       }
       toc(month)
     }
     toc(year)
   }
-  toc('all')
+  toc("all")
 }
