@@ -56,6 +56,14 @@
 url_root = "https://www.churchofjesuschrist.org/"
 
 
+print_skipped_urls <- function(all_urls, exported_urls){
+  skipped_urls <- all_urls[!(all_urls %in% exported_urls)]
+  if(length(skipped_urls > 0)){
+    message('The following urls were skipped:')
+    message(paste(skipped_urls, collapse='\n'))
+  }
+}
+
 scrape_conference_talks <- function(year, month) {
   mo_str = str_pad(month, width=2, pad="0")
   conference <- scrape_conference_urls(year, month)
@@ -72,17 +80,43 @@ scrape_conference_talks <- function(year, month) {
   #   print(u)
   #   x <- scrape_talk(u)
   # }
+  # Print missing conference talks, if any. scrape_talk might skip some urls.
+  exported_urls <- conference_talks$url %>%
+    str_replace(url_root, '')
+  all_urls <- df_conference$talk_urls
+  print_skipped_urls(all_urls = all_urls, exported_urls = exported_urls)
 
+  # Save out to disk
   df_conference %>%
     bind_cols(conference_talks) %>%
     nest(talks = c(talk_urls, talk_session_id, url, title1, author1, author2, kicker1, paragraphs)) %>%
     nest(sessions = c(session_name, session_id, session_url, talks)) %>%
+    #'bz2' is one type of compression that seemed to perform the best
     write_rds(file=glue("data/sessions/{year}{mo_str}.rds"), compress = 'bz2')
 }
 
-# year = 2020
-# month = 10
-# x <- scrape_conference_talks(year, month)
+year = 1971
+month = 10
+scrape_conference_talks(year, month)
+x <- read_rds(glue("data/sessions/{year}{mo_str}.rds"))
+x %>% unnest(sessions) %>% unnest(talks) %>% nrow()
+exported_urls <- x %>%
+  unnest(sessions) %>%
+  unnest(talks) %>%
+  pull(talk_urls)
+
+raw_urls <- scrape_conference_urls(year, month) %>%
+  unnest(sessions) %>%
+  unnest(session_talk_urls) %>%
+  pull(talk_urls)
+
+for(i in 1:length(raw_urls)){
+  if(!(raw_urls[i] %in% exported_urls)){
+    print(i)
+  }
+}
+
+
 # write_rds(x, file=glue("data/sessions/{year}{mo_str}.rds"), compress = 'bz2')
 
 
