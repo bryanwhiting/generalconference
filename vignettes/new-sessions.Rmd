@@ -2,7 +2,7 @@
 title: "Scraping Sessions"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction}
+  %\VignetteIndexEntry{Scraping Sessions}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -12,6 +12,9 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+```
+```{r}
+library(generalconference)
 ```
 
 Use the following code to download a session one-off:
@@ -33,6 +36,5 @@ month = 04
 scrape_conference_talks(year, month)
 # Read the dataframe in
 df_conf <- read_rds(glue("data/sessions/{year}{mo_str}.rds"))
-```
 ```
 

@@ -4,10 +4,10 @@
 \alias{extract_element}
 \title{Extract html document elements}
 \usage{
-extract_element(html_document, element)
+extract_element(rv_doc, element)
 }
 \arguments{
-\item{html_document}{rvest::read_html() document}
+\item{rv_doc}{rvest::read_html() document}
 
 \item{element}{class you want to extract (use Selector Gadget)}
 }

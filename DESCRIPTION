@@ -25,19 +25,24 @@ Suggests:
 VignetteBuilder: knitr
 Imports: 
     dplyr,
+    furrr,
     glue,
     purrr,
     stringr,
     rvest,
+    tictoc,
     tidyr,
     xml2
 Depends: 
     dplyr,
     glue,
+    furrr,
     purrr,
     stringr,
     rvest,
+    tictoc,
     tidyr,
-    xml2
+    xml2,
+    R (>= 2.10)
 Config/testthat/edition: 3
 RoxygenNote: 7.1.1

@@ -1,8 +1,9 @@
 ---
-title: "How To Scrape"
+title: "How To Scrape General Conference Talks"
+subtitle: "Things I don't want to forget"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction}
+  %\VignetteIndexEntry{How to Scrape General Conference Talks}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,9 +18,15 @@ knitr::opts_chunk$set(
 ## Inspecting XML nodes
 
 ```{r}
+library(rvest)
+library(dplyr)
+library(xml2)
+```
+```{r}
+rv_doc <- rvest::read_html("https://www.churchofjesuschrist.org/study/liahona/2020/11/15cook?lang=eng")
 rv_doc %>%
-    html_elements('.body-block') %>%
-    html_structure()
+  html_elements(".body-block") %>%
+  xml2::html_structure()
 ```
 
 
@@ -37,62 +44,82 @@ rv_doc %>%
 ```
 
 ```{r}
-  rv_doc %>%
-    html_elements('.body-block') %>%
-    xml_contents()
+rv_doc %>%
+  html_elements(".body-block") %>%
+  xml_contents()
 
 rv_doc %>%
-    html_elements('.body-block p')
+  html_elements(".body-block p")
 
 rv_doc %>%
-    html_elements('.body-block') %>%
-    html_children()
+  html_elements(".body-block") %>%
+  html_children()
+```
+```{r}
+rv_doc %>%
+  html_elements("header")
+```
+```{r}
+rv_doc %>%
+  html_elements(".body") %>%
+  html_elements("header") %>%
+  html_text2()
 ```
 
 Get specific paragraph by id:
 ```{r}
 rv_doc %>%
-  html_elements('#p5')
+  html_elements("#p5")
 ```
 
 
 Get multiple things at the same time (headers and paragraphs):
 ```{r}
 rv_doc %>%
-  html_elements('.body-block h2, .body-block p')
+  html_elements(".body-block h2, .body-block p")
 ```
 
 
 # Scratch code
 ```{r}
-
 header_ids <- rv_doc %>%
-    html_elements('.body-block h2') %>% html_attr('id')
-  
-  p_ids <- rv_doc %>%
-    html_elements('.body-block p')
-    html_element("#p1")
-  
-  xm_contents <- rv_doc %>%
-    html_elements('.body-block') %>%
-    xml_contents()
-  
-  rv_doc %>%
-    html_elements('.body-block') %>%
-    # html_children() %>%
-    xml_child(1) %>%
-    xml_contents() %>%
-    html_elements('p')
+  html_elements(".body-block h2") %>%
+  html_attr("id")
+```
 
-  xm_contents %>%
-    xml_child(1) %>%
-    html_text()
+
+```{r}
+p_ids <- rv_doc %>%
+  html_elements(".body-block p") %>%
+  html_element("#p1")
+```
+
+
+```{r}
+xm_contents <- rv_doc %>%
+  html_elements(".body-block") %>%
+  xml_contents()
+```
+
+
+```{r}
+rv_doc %>%
+  html_elements(".body-block") %>%
+  # html_children() %>%
+  xml_child(1) %>%
+  xml_contents() %>%
+  html_elements("p")
+```
+
+```{r}
+xm_contents %>%
+  xml_child(1) %>%
+  html_text()
 ```
 
 Scrape metadata for url
 ```{r}
 rv_doc %>%
-    html_elements('head') %>%
-    html_elements('meta')
+  html_elements("head") %>%
+  html_elements("meta")
 ```
-

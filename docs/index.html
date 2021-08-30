@@ -64,7 +64,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="articles/how-to-scrape.html">How To Scrape General Conference Talks</a>
+    </li>
+    <li>
       <a href="articles/introduction.html">Introduction</a>
+    </li>
+    <li>
+      <a href="articles/new-sessions.html">Scraping Sessions</a>
     </li>
   </ul>
 </li>
@@ -109,6 +115,10 @@
 <li>devtools::test()</li>
 <li>devtools::check(): checks package</li>
 </ul>
+<p>Build data folder</p>
+<ul>
+<li>use_this::use_data_raw() - builds data-raw/ folder</li>
+</ul>
 <p>Build documentation:</p>
 <ul>
 <li>Update _pkgdown.yml with documents</li>
@@ -142,11 +152,33 @@ Build loop to extract all URLs from all sessions</li>
 Build loop to extract all content from all URLs</li>
 <li>
 <input type="checkbox" disabled>
+Refactor: rename scrape-talk-urls to scrape-conference-urls</li>
+<li>
+<input type="checkbox" disabled>
+Have a separate script for “scrape” data and “process (loop scrapes)”</li>
+<li>
+<input type="checkbox" disabled>
 Nest data</li>
 <li>
 <input type="checkbox" disabled>
 Test out size of data saveRDS() (or use write_rds and set compression)</li>
+<li>
+<input type="checkbox" disabled>
+Set up code coverage</li>
+<li>
+<input type="checkbox" disabled>
+Set up github actions</li>
 </ul>
+<p>x &lt;- mtcars %&gt;% select(mpg, disp, am, vs) %&gt;% nest(data = c(vs, c(mpg, disp)))</p>
+<div id="gh-api" class="section level3">
+<h3 class="hasAnchor">
+<a href="#gh-api" class="anchor"></a>gh api:</h3>
+<pre><code>gh issue create --label "bug"
+gh issue list
+gh issue view 4 
+# Todo: parse this and re-submit
+gh issue view 4 --json body</code></pre>
+</div>
 </div>
 
   </div>

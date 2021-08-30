@@ -1,7 +1,26 @@
+#' Scrape an individual General Conference URL
+#'
+#' @description
+#' Helps scrape a talk
+#'
+#' @details
+#' See unit tests for edge case urls.
+
+
+#' Simple string extractor. Removes ?lang=eng and other stuff
+#'
+#' @param url raw url
+#'
+#' @return string
 parse_url <- function(url){
   str_match(url, '^(.*)\\?')[2]
 }
 
+#' Extract url from rv_doc
+#'
+#' @param rv_doc rvest::read_html() object
+#'
+#' @return string
 extract_url_from_rv_doc <- function(rv_doc) {
   meta <- rv_doc %>%
     html_elements("head") %>%
@@ -33,14 +52,12 @@ extract_element <- function(rv_doc, element) {
     setNames(element) # name the dataframe with the element content
 }
 
-#' Title
+#' Produce paragraphs
 #'
-#' @param rv_document
+#' @param rv_doc rvest::read_html() document
 #'
-#' @return
+#' @return dataframe with paragraphs
 #' @export
-#'
-#' @examples
 extract_body_paragraphs_df <- function(rv_doc) {
   # .body-block specifies the text of the talk
   # in older talks, it starts with #p2 as #p1 is the author
