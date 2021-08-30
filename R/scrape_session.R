@@ -44,8 +44,10 @@ scrape_conference_talks <- function(year, month, path) {
       conference_talks <- bind_rows(conference_talks, scrape_talk(u))
     }
   }
-  # Pring bad URLS
+  # Print bad URLS
   conference_talks %>%
+    filter(is.na(title1)) %>%
+    pull(url)
 
   conference_talks %>%
     filter(is.na(titles1)) %>%

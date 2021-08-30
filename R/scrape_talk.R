@@ -90,58 +90,107 @@ extract_body_paragraphs_df <- function(rv_doc) {
     select(section_num, p_num, p_id, is_header, paragraph)
 }
 
-extract_metadata <- function(rv_doc) {
-  #' Extract title, author, and kicker from a url and return as a row in a
-  #' dataframe.
+extract_metadata <- function(rv_doc){
+  # url missing header
+  # url <- "https://www.churchofjesuschrist.org/study/general-conference/2020/10/32craven"
+  # url <- "https://www.churchofjesuschrist.org/study/general-conference/1971/04/out-of-the-darkness?lang=eng"
+  # rv_doc <- read_html(url)
 
-  # the .body-block contains the speech text. But the #p anchors
-  # can be wrong.
-  # returns list of p1, p2, p3... for new talks and p2, p3, p4 for old talks
-  p_bodies <- rv_doc %>%
-    html_elements(".body-block p") %>%
-    html_attr("id")
-
-  # Explaining !("p1" %in% p_bodies):
-  #  Sometimes, the first paragraph isn't p1
-  #  e.g., "https://www.churchofjesuschrist.org/study/general-conference/2019/04/27homer"
-  #  First paragraph is "p20", then 2nd is "p1".
-  if ("p1" %in% p_bodies) {
-    # In new talks, #p1 is the paragraph text
-    elements <- c("#title1", "#author1", "#author2", "#kicker1")
-    map_dfc(elements, ~ extract_element(rv_doc = rv_doc, element = .)) %>%
-      rename_all(~ str_replace(., fixed("#"), "")) %>%
-      return()
-  } else if (p_bodies[1] == "p5"){
-    # Some talks start at p5, and p1-4 are the title, author, author and kicker
-    # url <- "https://www.churchofjesuschrist.org/study/liahona/2020/11/15cook?lang=eng"
-    # rv_doc <- read_html(url)
-    elements <- c("#p1", "#p2", "#p3", "#p4")
-    df <- map_dfc(elements, ~ extract_element(rv_doc = rv_doc, element = .)) %>%
-      rename_all(~ str_replace(., fixed("#"), "")) %>%
-      rename(title1 = p1,
-             author1 = p2,
-             author2 = p3,
-             kicker1 = p4)
-  } else {
-    # In older talks, #p1 is the author block
-    elements <- c("#title1", "#author1", "#author2", "#kicker1", "#p1")
-    df <- map_dfc(elements, ~ extract_element(rv_doc = rv_doc, element = .)) %>%
-      rename_all(~ str_replace(., fixed("#"), ""))
-
-    if (is.na(df$author1)) {
-      df$author1 <- df$p1
-    } else {
-      url <- extract_url_from_rv_doc(rv_doc)
-      message(
-        "#p1 not in .body-block p: ", url,
-        "\nPulled #p1 for metadata but author1 is not null."
-      )
-    }
-    df %>%
-      select(-p1) %>%
-      return()
+  get_text <- function(x){
+    x %>%
+      xml_contents() %>%
+      toString()
   }
+  # TODO: Fix header import.
+  title1 <- rv_doc %>%
+    html_elements(".body") %>%
+    html_elements('header') %>%
+    html_elements('h1')  %>%
+    get_text()
+
+  byline_str <- rv_doc %>% html_elements('.byline') %>% get_text()
+  if(str_detect(byline_str, "author-name")){
+    author1 <- rv_doc %>%
+      html_elements(".author-name") %>%
+      get_text()
+    author2 <- rv_doc %>%
+      html_elements(".author-role") %>%
+      get_text()
+  } else {
+    author1 <- rv_doc %>%
+      html_elements('.byline') %>%
+      html_elements('p') %>%
+      get_text()
+    author2 <- ""
+  }
+
+  kicker1 <- rv_doc %>%
+    html_elements(".kicker") %>%
+    get_text()
+
+  tibble(
+    title1,
+    author1,
+    author2,
+    kicker1
+  )
 }
+
+
+
+# DEPRECATED 2021-08-30
+#' extract_metadata <- function(rv_doc) {
+#'   #' Extract title, author, and kicker from a url and return as a row in a
+#'   #' dataframe.
+#'
+#'   # the .body-block contains the speech text. But the #p anchors
+#'   # can be wrong.
+#'   # returns list of p1, p2, p3... for new talks and p2, p3, p4 for old talks
+#'   p_bodies <- rv_doc %>%
+#'     html_elements(".body-block p") %>%
+#'     html_attr("id")
+#'
+#'   # Explaining !("p1" %in% p_bodies):
+#'   #  Sometimes, the first paragraph isn't p1
+#'   #  e.g., "https://www.churchofjesuschrist.org/study/general-conference/2019/04/27homer"
+#'   #  First paragraph is "p20", then 2nd is "p1".
+#'   if ("p1" %in% p_bodies) {
+#'     # In new talks, #p1 is the paragraph text
+#'     elements <- c("#title1", "#author1", "#author2", "#kicker1")
+#'     map_dfc(elements, ~ extract_element(rv_doc = rv_doc, element = .)) %>%
+#'       rename_all(~ str_replace(., fixed("#"), "")) %>%
+#'       return()
+#'   } else if (p_bodies[1] == "p5"){
+#'     # Some talks start at p5, and p1-4 are the title, author, author and kicker
+#'     # url <- "https://www.churchofjesuschrist.org/study/liahona/2020/11/15cook?lang=eng"
+#'     # rv_doc <- read_html(url)
+#'     elements <- c("#p1", "#p2", "#p3", "#p4")
+#'     df <- map_dfc(elements, ~ extract_element(rv_doc = rv_doc, element = .)) %>%
+#'       rename_all(~ str_replace(., fixed("#"), "")) %>%
+#'       rename(title1 = p1,
+#'              author1 = p2,
+#'              author2 = p3,
+#'              kicker1 = p4)
+#'   } else {
+#'     # In older talks, #p1 is the author block
+#'     elements <- c("#title1", "#author1", "#author2", "#kicker1", "#p1")
+#'     df <- map_dfc(elements, ~ extract_element(rv_doc = rv_doc, element = .)) %>%
+#'       rename_all(~ str_replace(., fixed("#"), ""))
+#'
+#'     if (is.na(df$author1)) {
+#'       df$author1 <- df$p1
+#'     } else {
+#'       url <- extract_url_from_rv_doc(rv_doc)
+#'       message(
+#'         "#p1 not in .body-block p: ", url,
+#'         "\nPulled #p1 for metadata but author1 is not null."
+#'       )
+#'     }
+#'     df %>%
+#'       select(-p1) %>%
+#'       return()
+#'   }
+#' }
 
 #' Scrape general conference talk
 #'
