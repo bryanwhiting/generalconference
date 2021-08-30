@@ -1,15 +1,22 @@
 read_html <- rvest::read_html
 
+test_that('parse_url() works', {
+  url <- "https://www.churchofjesuschrist.org/study/general-conference/2019/04/27homer?lang=eng&fbclid=IwAR0QIVmzxVLpOI2qSeDzeAntDrvQ4gnARr1cpZc24pa74w6BgU4gEfy-5uc"
+  parse_url(url) %>%
+    expect_equal("https://www.churchofjesuschrist.org/study/general-conference/2019/04/27homer")
+})
+
 test_that('extract_url_from_rv_doc() works', {
 
   # video has no metadata
-  url <- "https://www.churchofjesuschrist.org/study/general-conference/2020/10/33video?lang=eng"
+  url <- "https://www.churchofjesuschrist.org/study/general-conference/2020/10/33video"
   extract_url_from_rv_doc(rv_doc = read_html(url)) %>%
     expect_equal(url)
 
   url <- "https://www.churchofjesuschrist.org/study/general-conference/2019/04/27homer?lang=eng"
+  url2 <- "https://www.churchofjesuschrist.org/study/general-conference/2019/04/27homer"
   extract_url_from_rv_doc(rv_doc = read_html(url)) %>%
-    expect_equal(url)
+    expect_equal(url2)
 
 })
 
@@ -45,7 +52,13 @@ test_that("extract_metadata() works", {
   rv_doc <- rvest::read_html(url)
   expect_message(extract_metadata(rv_doc))
 
-  })
+  # url uses p1-p4
+  url <-  "https://www.churchofjesuschrist.org/study/liahona/2020/11/15cook"
+  rv_doc <- rvest::read_html(url)
+  ans <- extract_metadata(rv_doc)
+  expect_equal(ans$title1, "Hearts Knit in Righteousness and Unity")
+  expect_equal(ans$author1, "By Elder Quentin L. Cook")
+})
 
 test_that("extract_body_paragraphs_df() works", {
   # Old url
