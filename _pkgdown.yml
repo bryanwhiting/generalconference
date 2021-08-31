@@ -3,7 +3,16 @@ template:
   params:
     bootswatch: cerulean
 
+
+
 reference:
+- title: Datasets
+  desc: >
+    General conference datasets. `data("genconf")`
+- contents:
+  - "genconf"
+
+
 - title: Scrape
   desc: >
     Scrape general conference talks urls and contents. Any function with

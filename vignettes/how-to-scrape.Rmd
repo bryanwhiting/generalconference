@@ -3,7 +3,7 @@ title: "How To Scrape General Conference Talks"
 subtitle: "Things I don't want to forget"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{How to Scrape General Conference Talks}
+  %\VignetteIndexEntry{How To Scrape General Conference Talks}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

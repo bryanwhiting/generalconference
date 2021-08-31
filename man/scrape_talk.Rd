@@ -2,7 +2,7 @@
 % Please edit documentation in R/scrape_talk.R
 \name{scrape_talk}
 \alias{scrape_talk}
-\title{}
+\title{Scrape general conference talk}
 \usage{
 scrape_talk(url)
 }
@@ -13,13 +13,5 @@ scrape_talk(url)
 dataframe
 }
 \description{
-# the .body-block contains the speech text. But the #p anchors
-  # can be wrong.
-  # returns list of p1, p2, p3... for new talks and p2, p3, p4 for old talks
-  p_bodies <- rv_doc %>%
-    html_elements(".body-block p") %>%
-    html_attr("id")
-}
-\details{
-
+Scrape general conference talk
 }

@@ -15,6 +15,7 @@ parse_path_for_name <- function(path) {
 }
 
 #' Parse Session URLs
+#'
 #' Take a vector of session hrefs, use the first value
 #' as the session name, then the other values as the
 #' session talks
@@ -39,6 +40,7 @@ parse_session_urls <- function(session_hrefs) {
 }
 
 #' Scrape HTML doc map from Conference URL
+#'
 #' Given a year and a month, pull the entire .doc-map class
 #' object from the Conference URL. This will be parsed
 #' by downstream objects
@@ -90,9 +92,8 @@ extract_session_hrefs <- function(html_docmap, session_id) {
 #' For a given year-month conference, return a nested tibble of all sessions
 #' with a tibble-column containing the dataframes
 #'
-#'
-#' @param year
-#' @param month
+#' @param year year
+#' @param month month
 #'
 #' @return tibble
 #' @export

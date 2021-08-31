@@ -9,7 +9,9 @@ with a tibble-column containing the dataframes}
 scrape_conference_urls(year, month)
 }
 \arguments{
-\item{month}{}
+\item{year}{year}
+
+\item{month}{month}
 }
 \value{
 tibble

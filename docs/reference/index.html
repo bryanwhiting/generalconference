@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">generalconference</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -137,6 +137,25 @@
     <tbody>
       <tr>
         <th colspan="2">
+          <h2 id="section-datasets" class="hasAnchor"><a href="#section-datasets" class="anchor"></a>Datasets</h2>
+          <p class="section-desc"><p>General conference datasets. <code><a href="https://rdrr.io/r/utils/data.html">data("genconf")</a></code></p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="genconf.html">genconf</a></code> </p>
+        </td>
+        <td><p>General Conference Data</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
           <h2 id="section-scrape" class="hasAnchor"><a href="#section-scrape" class="anchor"></a>Scrape</h2>
           <p class="section-desc"><p>Scrape general conference talks urls and contents. Any function with <code>scrape</code> as a prefix will execute an rvest::read_html() call (e.g., visit the web page).</p></p>
         </th>
@@ -151,10 +170,13 @@
         <td>
           <p><code><a href="scrape_conference_html_doc_map.html">scrape_conference_html_doc_map()</a></code> </p>
         </td>
-        <td><p>Scrape HTML doc map from Conference URL
-Given a year and a month, pull the entire .doc-map class
-object from the Conference URL. This will be parsed
-by downstream objects</p></td>
+        <td><p>Scrape HTML doc map from Conference URL</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="scrape_conference_talks.html">scrape_conference_talks()</a></code> </p>
+        </td>
+        <td><p>Scrapes all conference talks for a sessions</p></td>
       </tr><tr>
         
         <td>
@@ -185,22 +207,27 @@ with a tibble-column containing the dataframes</p></td>
       <tr>
         
         <td>
+          <p><code><a href="extract_body_paragraphs_df.html">extract_body_paragraphs_df()</a></code> </p>
+        </td>
+        <td><p>Produce paragraphs</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="extract_element.html">extract_element()</a></code> </p>
         </td>
         <td><p>Extract html document elements</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="extract_metadata.html">extract_metadata()</a></code> </p>
-        </td>
-        <td><p>Extract title, author, and kicker from a url and return as a row in a
-dataframe.</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="extract_session_hrefs.html">extract_session_hrefs()</a></code> </p>
         </td>
         <td><p>Extract Session hrefs</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="extract_url_from_rv_doc.html">extract_url_from_rv_doc()</a></code> </p>
+        </td>
+        <td><p>Extract url from rv_doc</p></td>
       </tr><tr>
         
         <td>
@@ -212,10 +239,13 @@ dataframe.</p></td>
         <td>
           <p><code><a href="parse_session_urls.html">parse_session_urls()</a></code> </p>
         </td>
-        <td><p>Parse Session URLs
-Take a vector of session hrefs, use the first value
-as the session name, then the other values as the
-session talks</p></td>
+        <td><p>Parse Session URLs</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="parse_url.html">parse_url()</a></code> </p>
+        </td>
+        <td><p>Scrape an individual General Conference URL</p></td>
       </tr>
     </tbody>
     </table>

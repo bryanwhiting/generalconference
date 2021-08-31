@@ -2,10 +2,7 @@
 % Please edit documentation in R/scrape_talk_urls.R
 \name{scrape_conference_html_doc_map}
 \alias{scrape_conference_html_doc_map}
-\title{Scrape HTML doc map from Conference URL
-Given a year and a month, pull the entire .doc-map class
-object from the Conference URL. This will be parsed
-by downstream objects}
+\title{Scrape HTML doc map from Conference URL}
 \usage{
 scrape_conference_html_doc_map(year, month)
 }
@@ -18,7 +15,6 @@ scrape_conference_html_doc_map(year, month)
 Rvest object
 }
 \description{
-Scrape HTML doc map from Conference URL
 Given a year and a month, pull the entire .doc-map class
 object from the Conference URL. This will be parsed
 by downstream objects

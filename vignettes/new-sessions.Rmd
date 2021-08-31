@@ -18,23 +18,22 @@ library(generalconference)
 ```
 
 Use the following code to download a session one-off:
-```{r, eval=FALSE}
-# Debug individual year
+```{r}
+# Define the file path
 year = 2021
 month = 4
 mo_str = "04"
 path=glue("/home/rstudio/generalconference/data/sessions/{year}{mo_str}.rds")
-scrape_conference_talks(year, month, path)
-# Read the dataframe in
-df_conf <- read_rds(path)
 ```
 
+```{r, eval=FALSE}
+generalconference::scrape_conference_talks(year, month, path)
+```
 ```{r}
-# Debug individual year
-year = 2020
-month = 04
-scrape_conference_talks(year, month)
 # Read the dataframe in
-df_conf <- read_rds(glue("data/sessions/{year}{mo_str}.rds"))
+df_conf <- readr::read_rds(path)
+df_conf %>%
+  unnest(sessions) %>%
+  unnest(talks)
 ```
 
