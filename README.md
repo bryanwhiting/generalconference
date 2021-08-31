@@ -18,6 +18,9 @@ library(dplyr)
 library(tidyr)
 ```
 
+Load the General Conference corpus, which is a tibble with nested data
+for each conference, session, talk, and paragraph.
+
 ``` r
 data("genconf")
 head(genconf)
@@ -31,6 +34,9 @@ head(genconf)
 #> 5  1973     4 <tibble [7 × 4]>
 #> 6  1973    10 <tibble [7 × 4]>
 ```
+
+Unnest it to analyze individual talks, which can be unnested further to
+the paragraph level.
 
 ``` r
 genconf %>%
@@ -54,4 +60,5 @@ See [Example
 Analysis](https://bryanwhiting.github.io/generalconference/docs/articles/example-analysis.html)
 for more examples on how to analyze the data.
 
-See documentation for scrapers
+See documentation for scrapers, if you need them. But you shouldn’t need
+them since all the data is available.

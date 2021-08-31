@@ -168,7 +168,7 @@
 <p>Unnest to see sessions</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">df_conference</span> <span class="op">%&gt;%</span>
-  <span class="fu">unnest</span><span class="op">(</span><span class="va">sessions</span><span class="op">)</span>
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span><span class="va">sessions</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 7 × 6</span>
 <span class="co">#&gt;    year month session_name               session_id session_url session_talk_ur…</span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;                           &lt;int&gt; &lt;chr&gt;       &lt;list&gt;          </span>
@@ -182,8 +182,8 @@
 <p>Unnest to see the individual talk urls:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">df_conference</span> <span class="op">%&gt;%</span>
-  <span class="fu">unnest</span><span class="op">(</span><span class="va">sessions</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">unnest</span><span class="op">(</span><span class="va">session_talk_urls</span><span class="op">)</span>
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span><span class="va">sessions</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span><span class="va">session_talk_urls</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 42 × 7</span>
 <span class="co">#&gt;     year month session_name  session_id session_url  talk_urls   talk_session_id</span>
 <span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;              &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;                 &lt;int&gt;</span>

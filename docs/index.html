@@ -92,17 +92,48 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-"General conference is the worldwide gathering of The Church of 
-    Jesus Christ of Latter-day Saints. Twice a year, during the first weekend of
-    April and the first weekend of October, Church leaders from around the world
-    share messages or sermons focused on the living Christ and His gospel. 
-    Viewers learn how to find peace, hope, and joy in Jesus Christ; 
-    how to strengthen families by following Jesus’s teachings; and how to 
-    receive personal guidance and inspiration from God." 
-    [General Conference](https://www.churchofjesuschrist.org/learn/general-conference)
-    This package is _not_ affiliated with or maintained by The Church of Jesus 
-    Christ of Latter-day Saints. Any opinions or views expressed in this 
-    package and its development reflect those of the authors.
+<div id="generalconference" class="section level1">
+<div class="page-header"><h1 class="hasAnchor">
+<a href="#generalconference" class="anchor"></a>generalconference</h1></div>
+<p><a href="https://www.churchofjesuschrist.org/study/general-conference?lang=eng">General Conference</a> is a semi-annual event where members of The Church of Jesus Christ of Latter-day Saints gather to listen to church prophets, apostles, and other leaders.</p>
+<p>This package both scrapes General Conference talks and provides all talks in a data package.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">generalconference</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span></code></pre></div>
+<p>Load the General Conference corpus, which is a tibble with nested data for each conference, session, talk, and paragraph.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"genconf"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">genconf</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 6 × 3</span>
+<span class="co">#&gt;    year month sessions        </span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;list&gt;          </span>
+<span class="co">#&gt; 1  1971     4 &lt;tibble [7 × 4]&gt;</span>
+<span class="co">#&gt; 2  1971    10 &lt;tibble [7 × 4]&gt;</span>
+<span class="co">#&gt; 3  1972     4 &lt;tibble [7 × 4]&gt;</span>
+<span class="co">#&gt; 4  1972    10 &lt;tibble [7 × 4]&gt;</span>
+<span class="co">#&gt; 5  1973     4 &lt;tibble [7 × 4]&gt;</span>
+<span class="co">#&gt; 6  1973    10 &lt;tibble [7 × 4]&gt;</span></code></pre></div>
+<p>Unnest it to analyze individual talks, which can be unnested further to the paragraph level.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">genconf</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span><span class="va">sessions</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span><span class="va">talks</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 6 × 13</span>
+<span class="co">#&gt;    year month session_name  session_id session_url   talk_urls   talk_session_id</span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;              &lt;int&gt; &lt;chr&gt;         &lt;chr&gt;                 &lt;int&gt;</span>
+<span class="co">#&gt; 1  1971     4 Saturday Mor…          1 /study/gener… /study/gen…               1</span>
+<span class="co">#&gt; 2  1971     4 Saturday Mor…          1 /study/gener… /study/gen…               2</span>
+<span class="co">#&gt; 3  1971     4 Saturday Mor…          1 /study/gener… /study/gen…               3</span>
+<span class="co">#&gt; 4  1971     4 Saturday Mor…          1 /study/gener… /study/gen…               4</span>
+<span class="co">#&gt; 5  1971     4 Saturday Aft…          2 /study/gener… /study/gen…               1</span>
+<span class="co">#&gt; 6  1971     4 Saturday Aft…          2 /study/gener… /study/gen…               2</span>
+<span class="co">#&gt; # … with 6 more variables: url &lt;chr&gt;, title1 &lt;chr&gt;, author1 &lt;chr&gt;,</span>
+<span class="co">#&gt; #   author2 &lt;chr&gt;, kicker1 &lt;chr&gt;, paragraphs &lt;list&gt;</span></code></pre></div>
+<p>See <a href="https://bryanwhiting.github.io/generalconference/docs/articles/example-analysis.html">Example Analysis</a> for more examples on how to analyze the data.</p>
+<p>See documentation for scrapers, if you need them. But you shouldn’t need them since all the data is available.</p>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
