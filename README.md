@@ -56,9 +56,8 @@ genconf %>%
 #> #   author2 <chr>, kicker1 <chr>, paragraphs <list>
 ```
 
-See [Example
-Analysis](https://bryanwhiting.github.io/generalconference/docs/articles/example-analysis.html)
-for more examples on how to analyze the data.
+See [Example Analysis](articles/example-analysis.html) for more examples
+on how to analyze the data.
 
 See documentation for scrapers, if you need them. But you shouldn’t need
 them since all the data is available.
