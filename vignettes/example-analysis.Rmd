@@ -1,0 +1,50 @@
+---
+title: "Example Analysis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Example Analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Load the data and analyze
+
+```{r setup}
+library(generalconference)
+library(dplyr)
+data("genconf")
+head(genconf)
+```
+
+```{r}
+df <- genconf
+```
+
+How many conferences have there been since 1971?
+```{r}
+df %>%
+  count()
+```
+
+How many sessions have there been?
+```{r}
+df %>%
+  unnest(sessions) %>%
+  count()
+```
+
+How many talks have there been since 1971?
+```{r}
+df %>%
+  unnest(sessions) %>%
+  unnest(talks) %>%
+  count()
+```
+

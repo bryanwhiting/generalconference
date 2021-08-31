@@ -41,20 +41,14 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">generalconference</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="reference/index.html">Reference</a>
+  <a href="articles/introduction.html">Intro</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -63,19 +57,27 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="articles/how-to-scrape.html">How To Scrape General Conference Talks</a>
+<li class="dropdown-header">How to Scrape</li>
+    <li>
+      <a href="articles/how-to-scrape.html">Examples of How to Scrape</a>
     </li>
     <li>
-      <a href="articles/introduction.html">Introduction</a>
+      <a href="articles/new-sessions.html">How to Add a New Session</a>
     </li>
+    <li class="dropdown-header">Case Studies</li>
     <li>
-      <a href="articles/new-sessions.html">Scraping Sessions</a>
+      <a href="articles/example-analysis.html">Case Study: Example Analysis</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="news/index.html">Changelog</a>
+  <a href="articles/developers.html">For Developers</a>
+</li>
+<li>
+  <a href="reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="news/index.html">News</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
@@ -90,97 +92,17 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-
-<div id="generalconference" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#generalconference" class="anchor"></a>generalconference</h1></div>
-<p>Scrape General Conference Talks using R</p>
-</div>
-<div id="developer-notes" class="section level1">
-<h1 class="hasAnchor">
-<a href="#developer-notes" class="anchor"></a>Developer notes</h1>
-<p>Building a package: <a href="https://r-pkgs.org/vignettes.html" class="uri">https://r-pkgs.org/vignettes.html</a>, <a href="https://fanwangecon.github.io/R4Econ/support/development/fs_packaging.pdf" class="uri">https://fanwangecon.github.io/R4Econ/support/development/fs_packaging.pdf</a></p>
-<ul>
-<li>devtools::create(‘generalconference’)</li>
-<li>devtools::install()</li>
-<li>usethis::use_vignette(‘introduction’)</li>
-<li><a href="https://pkgdown.r-lib.org/" class="uri">https://pkgdown.r-lib.org/</a></li>
-</ul>
-<p>workflow: <a href="https://r-pkgs.org/whole-game.html" class="uri">https://r-pkgs.org/whole-game.html</a></p>
-<ul>
-<li>usethis::use_r(name=“new_func”): build functions in R and save</li>
-<li>usethis::use_test(name=“new_func”): builds new test</li>
-<li>usethis::use_package(‘xxxx’): Add new package to DESCRIPTION as necessary</li>
-<li>devtools::load_all()</li>
-<li>devtools::test()</li>
-<li>devtools::check(): checks package</li>
-</ul>
-<p>Build data folder</p>
-<ul>
-<li>use_this::use_data_raw() - builds data-raw/ folder</li>
-</ul>
-<p>Build documentation:</p>
-<ul>
-<li>Update _pkgdown.yml with documents</li>
-<li>covr::report()</li>
-<li>devtools::document() -&gt; generates NAMESPACE from documentation</li>
-<li>devtools::run_examples()</li>
-<li>devtools::build_vignettes()</li>
-<li>devtools::build()</li>
-<li>pkgdown::build_site()</li>
-</ul>
-<p>packages used:</p>
-<ul>
-<li>usethis::use_mit_license(“My Name”)</li>
-<li>usethis::use_package(‘dplyr’)</li>
-<li>usethis::use_package(‘rvest’)</li>
-</ul>
-<p>Unit tests:</p>
-<ul>
-<li>use_test(“scrape_talk”)</li>
-</ul>
-</div>
-<div id="next-steps" class="section level1">
-<h1 class="hasAnchor">
-<a href="#next-steps" class="anchor"></a>Next steps:</h1>
-<ul class="task-list">
-<li>
-<input type="checkbox" disabled>
-Build loop to extract all URLs from all sessions</li>
-<li>
-<input type="checkbox" disabled>
-Build loop to extract all content from all URLs</li>
-<li>
-<input type="checkbox" disabled>
-Refactor: rename scrape-talk-urls to scrape-conference-urls</li>
-<li>
-<input type="checkbox" disabled>
-Have a separate script for “scrape” data and “process (loop scrapes)”</li>
-<li>
-<input type="checkbox" disabled>
-Nest data</li>
-<li>
-<input type="checkbox" disabled>
-Test out size of data saveRDS() (or use write_rds and set compression)</li>
-<li>
-<input type="checkbox" disabled>
-Set up code coverage</li>
-<li>
-<input type="checkbox" disabled>
-Set up github actions</li>
-</ul>
-<p>x &lt;- mtcars %&gt;% select(mpg, disp, am, vs) %&gt;% nest(data = c(vs, c(mpg, disp)))</p>
-<div id="gh-api" class="section level3">
-<h3 class="hasAnchor">
-<a href="#gh-api" class="anchor"></a>gh api:</h3>
-<pre><code>gh issue create --label "bug"
-gh issue list
-gh issue view 4 
-# Todo: parse this and re-submit
-gh issue view 4 --json body</code></pre>
-</div>
-</div>
-
+"General conference is the worldwide gathering of The Church of 
+    Jesus Christ of Latter-day Saints. Twice a year, during the first weekend of
+    April and the first weekend of October, Church leaders from around the world
+    share messages or sermons focused on the living Christ and His gospel. 
+    Viewers learn how to find peace, hope, and joy in Jesus Christ; 
+    how to strengthen families by following Jesus’s teachings; and how to 
+    receive personal guidance and inspiration from God." 
+    [General Conference](https://www.churchofjesuschrist.org/learn/general-conference)
+    This package is _not_ affiliated with or maintained by The Church of Jesus 
+    Christ of Latter-day Saints. Any opinions or views expressed in this 
+    package and its development reflect those of the authors.
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

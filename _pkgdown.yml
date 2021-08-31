@@ -3,7 +3,27 @@ template:
   params:
     bootswatch: cerulean
 
-
+navbar:
+  type: default
+  left:
+  - text: Intro
+    href: articles/introduction.html
+  - text: Articles
+    menu:
+    - text: How to Scrape
+    - text: Examples of How to Scrape
+      href: articles/how-to-scrape.html
+    - text: How to Add a New Session
+      href: articles/new-sessions.html
+    - text: Case Studies
+    - text: 'Case Study: Example Analysis'
+      href: articles/example-analysis.html
+  - text: For Developers
+    href: articles/developers.html
+  - text: Reference
+    href: reference/index.html
+  - text: News
+    href: news/index.html
 
 reference:
 - title: Datasets

@@ -1,0 +1,49 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# generalconference
+
+[General Conference](https://www.churchofjesuschrist.org/study/general-conference?lang=eng) is a semi-annual event where members of The Church of Jesus Christ of Latter-day
+Saints gather to listen to church prophets, apostles, and other leaders.
+
+This package both scrapes General Conference talks and provides all talks
+in a data package. 
+
+```{r, message = FALSE}
+library(generalconference)
+library(dplyr)
+library(tidyr)
+```
+
+Load the General Conference corpus, which is a tibble with nested data
+for each conference, session, talk, and paragraph.
+```{r}
+data("genconf")
+head(genconf)
+```
+
+Unnest it to analyze individual talks, which can be unnested further to
+the paragraph level.
+
+```{r}
+genconf %>%
+  unnest(sessions) %>%
+  unnest(talks) %>%
+  head()
+```
+
+See [Example Analysis](https://bryanwhiting.github.io/generalconference/docs/articles/example-analysis.html) for more examples on how to analyze the data.
+
+See documentation for scrapers, if you need them. But you shouldn't need them since all the data is available.

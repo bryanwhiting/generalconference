@@ -76,4 +76,6 @@ genconf <- list.files("data/sessions", full.names = T) %>%
   map(read_rds) %>%
   bind_rows()
 
+#
+
 usethis::use_data(genconf, overwrite = TRUE)
