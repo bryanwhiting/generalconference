@@ -56,8 +56,11 @@ genconf %>%
 #> #   author2 <chr>, kicker1 <chr>, paragraphs <list>
 ```
 
-See [Example Analysis](articles/example-analysis.html) for more examples
-on how to analyze the data.
+# Getting Started
+
+-   See [Example Analysis](articles/example-analysis.html) for more
+    examples on how to analyze the data.
+-   See [genconf](reference/genconf.html) for a schema of the data.
 
 See documentation for scrapers, if you need them. But you shouldn’t need
 them since all the data is available.
