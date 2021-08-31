@@ -33,16 +33,14 @@ scrape_conference_talks(year = year, month = month, path = path)
 # scrapes the talk safely
 scrape_conference_talks_possibly <- furrr::possibly(.f = scrape_conference_talks, otherwise = NULL)
 
-scrape_all_conferences <- function() {
+scrape_all_conferences <- function(end_yr, start_yr) {
   # If there's an error, just skip
-  end_yr <- 2020
-  start_yr <- 2019
 
   tic("all")
   for (year in end_yr:start_yr) {
     tic(year)
     print(year)
-    for (month in c(4, 10)) {
+    for (month in c(10, 4)) {
       message(Sys.time(), "|   month:", month)
       tic(month)
 
@@ -71,10 +69,11 @@ scrape_all_conferences <- function() {
   }
   toc("all")
 }
-scrape_all_conferences()
+scrape_all_conferences(end_yr = 1996, start_yr =1971)
 
 # Join all conferences
 genconf <- list.files("data/sessions", full.names = T) %>%
   map(read_rds) %>%
   bind_rows()
+
 usethis::use_data(genconf, overwrite = TRUE)
