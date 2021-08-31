@@ -1,7 +1,7 @@
 Package: generalconference
 Type: Package
 Title: General Conference text corpus and web scrapers
-Version: 0.3.0
+Version: 0.3.2
 Author: Bryan Whiting
 Maintainer: Bryan Whiting <yourself@somewhere.net>
 Description: "General conference is the worldwide gathering of The Church of 
