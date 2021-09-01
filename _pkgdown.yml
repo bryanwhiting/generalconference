@@ -1,3 +1,7 @@
+url: https://bryanwhiting.github.io/generalconference
+
+home:
+  strip_header: true
 
 template:
   params:
@@ -18,8 +22,8 @@ navbar:
     - text: Case Studies
     - text: 'Case Study: Example Analysis'
       href: articles/example-analysis.html
-  - text: For Developers
-    href: articles/developers.html
+    - text: "Development"
+      href: CONTRIBUTING.html
   - text: Reference
     href: reference/index.html
   - text: News

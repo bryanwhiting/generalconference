@@ -58,10 +58,10 @@
     <li>
       <a href="../articles/example-analysis.html">Case Study: Example Analysis</a>
     </li>
+    <li>
+      <a href="../CONTRIBUTING.html">Development</a>
+    </li>
   </ul>
-</li>
-<li>
-  <a href="../articles/developers.html">For Developers</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -70,7 +70,14 @@
   <a href="../news/index.html">News</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/bryanwhiting/generalconference/">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -86,7 +93,7 @@
       <h1 data-toc-skip>Example Analysis</h1>
             
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/bryanwhiting/generalconference/blob/master/vignettes/example-analysis.Rmd"><code>vignettes/example-analysis.Rmd</code></a></small>
       <div class="hidden name"><code>example-analysis.Rmd</code></div>
 
     </div>
@@ -130,15 +137,15 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"genconf"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">genconf</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 6 × 3</span>
-<span class="co">#&gt;    year month sessions        </span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;list&gt;          </span>
-<span class="co">#&gt; 1  1971     4 &lt;tibble [7 × 4]&gt;</span>
-<span class="co">#&gt; 2  1971    10 &lt;tibble [7 × 4]&gt;</span>
-<span class="co">#&gt; 3  1972     4 &lt;tibble [7 × 4]&gt;</span>
-<span class="co">#&gt; 4  1972    10 &lt;tibble [7 × 4]&gt;</span>
-<span class="co">#&gt; 5  1973     4 &lt;tibble [7 × 4]&gt;</span>
-<span class="co">#&gt; 6  1973    10 &lt;tibble [7 × 4]&gt;</span></code></pre></div>
+<span class="co">#&gt; # A tibble: 6 × 4</span>
+<span class="co">#&gt;    year month date       sessions        </span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;date&gt;     &lt;list&gt;          </span>
+<span class="co">#&gt; 1  2021     4 2021-04-01 &lt;tibble [5 × 4]&gt;</span>
+<span class="co">#&gt; 2  2020    10 2020-10-01 &lt;tibble [5 × 4]&gt;</span>
+<span class="co">#&gt; 3  2020     4 2020-04-01 &lt;tibble [5 × 4]&gt;</span>
+<span class="co">#&gt; 4  2019    10 2019-10-01 &lt;tibble [5 × 4]&gt;</span>
+<span class="co">#&gt; 5  2019     4 2019-04-01 &lt;tibble [5 × 4]&gt;</span>
+<span class="co">#&gt; 6  2018    10 2018-10-01 &lt;tibble [5 × 4]&gt;</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">genconf</span></code></pre></div>
 <p>How many conferences have there been since 1971?</p>
@@ -169,6 +176,32 @@
 <span class="co">#&gt;   &lt;int&gt;</span>
 <span class="co">#&gt; 1  3883</span></code></pre></div>
 </div>
+<div id="explore-the-quality-of-the-data" class="section level1">
+<h1 class="hasAnchor">
+<a href="#explore-the-quality-of-the-data" class="anchor"></a>Explore the quality of the data</h1>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">df_talks</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span><span class="va">sessions</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span><span class="va">talks</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">df_talks</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 6 × 14</span>
+<span class="co">#&gt;    year month date       session_name   session_id session_url      talk_urls   </span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt;               &lt;int&gt; &lt;chr&gt;            &lt;chr&gt;       </span>
+<span class="co">#&gt; 1  2021     4 2021-04-01 Saturday Morn…          1 /study/general-… /study/gene…</span>
+<span class="co">#&gt; 2  2021     4 2021-04-01 Saturday Morn…          1 /study/general-… /study/gene…</span>
+<span class="co">#&gt; 3  2021     4 2021-04-01 Saturday Morn…          1 /study/general-… /study/gene…</span>
+<span class="co">#&gt; 4  2021     4 2021-04-01 Saturday Morn…          1 /study/general-… /study/gene…</span>
+<span class="co">#&gt; 5  2021     4 2021-04-01 Saturday Morn…          1 /study/general-… /study/gene…</span>
+<span class="co">#&gt; 6  2021     4 2021-04-01 Saturday Morn…          1 /study/general-… /study/gene…</span>
+<span class="co">#&gt; # … with 7 more variables: talk_session_id &lt;int&gt;, url &lt;chr&gt;, title1 &lt;chr&gt;,</span>
+<span class="co">#&gt; #   author1 &lt;chr&gt;, author2 &lt;chr&gt;, kicker1 &lt;chr&gt;, paragraphs &lt;list&gt;</span></code></pre></div>
+<p>Only one talk without a title, but this is a video talk.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">df_talks</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">title1</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">url</span><span class="op">)</span>
+<span class="co">#&gt; [1] "https://www.churchofjesuschrist.org/study/general-conference/2020/10/33video"</span></code></pre></div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -182,7 +215,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Bryan Whiting.</p>
+  <p>Developed by .</p>
 </div>
 
 <div class="pkgdown">

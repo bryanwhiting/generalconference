@@ -2,8 +2,14 @@ Package: generalconference
 Type: Package
 Title: General Conference text corpus and web scrapers
 Version: 0.3.2
-Author: Bryan Whiting
+Authors@R: c(
+    person("Bryan", "Whiting", email="brywhiting@gmail.com", role=c("aut", "cre", "cph"),
+    comment = c(URL = "<https://www.bryanwhiting.com>")),
+    person("Gospel Analysis", role = c("fnd"))
+    )
 Maintainer: Bryan Whiting <yourself@somewhere.net>
+URL: https://bryanwhiting.github.io/generalconference/, https://github.com/bryanwhiting/generalconference
+BugReports: https://github.com/bryanwhiting/generalconference/issues
 Description: "General conference is the worldwide gathering of The Church of 
     Jesus Christ of Latter-day Saints. Twice a year, during the first weekend of
     April and the first weekend of October, Church leaders from around the world

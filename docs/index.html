@@ -68,10 +68,10 @@
     <li>
       <a href="articles/example-analysis.html">Case Study: Example Analysis</a>
     </li>
+    <li>
+      <a href="CONTRIBUTING.html">Development</a>
+    </li>
   </ul>
-</li>
-<li>
-  <a href="articles/developers.html">For Developers</a>
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
@@ -80,7 +80,14 @@
   <a href="news/index.html">News</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/bryanwhiting/generalconference/">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -92,9 +99,9 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
+
 <div id="generalconference" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#generalconference" class="anchor"></a>generalconference</h1></div>
+
 <p><a href="https://www.churchofjesuschrist.org/study/general-conference?lang=eng">General Conference</a> is a semi-annual event where members of The Church of Jesus Christ of Latter-day Saints gather to listen to church prophets, apostles, and other leaders.</p>
 <p>This package both scrapes General Conference talks and provides all talks in a data package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -131,23 +138,49 @@
 <span class="co">#&gt; 6  1971     4 Saturday Aft…          2 /study/gener… /study/gen…               2</span>
 <span class="co">#&gt; # … with 6 more variables: url &lt;chr&gt;, title1 &lt;chr&gt;, author1 &lt;chr&gt;,</span>
 <span class="co">#&gt; #   author2 &lt;chr&gt;, kicker1 &lt;chr&gt;, paragraphs &lt;list&gt;</span></code></pre></div>
-<p>See <a href="articles/example-analysis.html">Example Analysis</a> for more examples on how to analyze the data.</p>
+</div>
+<div id="getting-started" class="section level1">
+<h1 class="hasAnchor">
+<a href="#getting-started" class="anchor"></a>Getting Started</h1>
+<ul>
+<li>See <a href="articles/example-analysis.html">Example Analysis</a> for more examples on how to analyze the data.</li>
+<li>See <a href="reference/genconf.html">genconf</a> for a schema of the data.</li>
+</ul>
 <p>See documentation for scrapers, if you need them. But you shouldn’t need them since all the data is available.</p>
 </div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <div class="license">
+    <div class="links">
+<h2>Links</h2>
+<ul class="list-unstyled">
+<li>Browse source code at <br><a href="https://github.com/bryanwhiting/generalconference/">https://​github.com/​bryanwhiting/​generalconference/​</a>
+</li>
+<li>Report a bug at <br><a href="https://github.com/bryanwhiting/generalconference/issues">https://​github.com/​bryanwhiting/​generalconference/​issues</a>
+</li>
+</ul>
+</div>
+<div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
 <li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+<div class="community">
+<h2>Community</h2>
+<ul class="list-unstyled">
+<li><a href="CONTRIBUTING.html">Contributing guide</a></li>
+<li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
+</ul>
+</div>
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Bryan Whiting <br><small class="roles"> Maintainer </small>  </li>
+<li>Bryan Whiting <br><small class="roles"> Author, maintainer, copyright holder </small>  <br><small>(&lt;<a href="https://www.bryanwhiting.com">https://www.bryanwhiting.com</a>&gt;)</small>
+</li>
+<li>Gospel Analysis <br><small class="roles"> Funder </small>  </li>
 </ul>
 </div>
 
@@ -156,7 +189,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Bryan Whiting.</p>
+  <p>Developed by Bryan Whiting, Gospel Analysis.</p>
 </div>
 
 <div class="pkgdown">

@@ -48,3 +48,27 @@ df %>%
   count()
 ```
 
+# Explore the quality of the data
+
+```{r}
+df_talks <- df %>%
+  unnest(sessions) %>%
+  unnest(talks)
+```
+
+
+```{r}
+df_talks %>%
+  head()
+```
+
+Only one talk without a title, but this is a video talk.
+```{r}
+df_talks %>% filter(is.na(title1)) %>% pull(url)
+```
+
+```{r}
+
+```
+
+

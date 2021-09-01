@@ -76,14 +76,14 @@ genconf <- list.files("data/sessions", full.names = T) %>%
   map(read_rds) %>%
   bind_rows()
 
-genconf %>%
+genconf <- genconf %>%
   arrange(desc(year), desc(month)) %>%
   mutate(
     date = glue("{year}{str_pad(month, width=2, pad=0)}01"),
     date = lubridate::ymd(date),
     # TODO: get metadata on sessions
     # n_sessions = map(sessions, ~ nrow(.))[0]
-  )
-#
+  ) %>%
+  select(year, month, date, sessions)
 
 usethis::use_data(genconf, overwrite = TRUE)

@@ -1,33 +1,19 @@
----
-title: "Developer Notes"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Developer Notes}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  eval = FALSE,
-  comment = "#>"
-)
-```
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # Developer notes
 
-If you're new to package development, this could be helpful to read.
+If you’re new to package development, this could be helpful to read.
 
 # Initializing a package
 
-* https://r-pkgs.org 
-* https://fanwangecon.github.io/R4Econ/support/development/fs_packaging.pdf
-* https://pkgdown.r-lib.org/
+-   <https://r-pkgs.org>
+-   <https://fanwangecon.github.io/R4Econ/support/development/fs_packaging.pdf>
+-   <https://pkgdown.r-lib.org/>
 
 Starting a new package/one-time commands.
 
-```{r, eval=F}
+``` r
 devtools::create('generalconference')
 devtools::install()
 usethis::use_mit_license("My Name")
@@ -40,9 +26,9 @@ use_this::use_data_raw()
 
 # Workflow
 
-* Read: https://r-pkgs.org/whole-game.html
+-   Read: <https://r-pkgs.org/whole-game.html>
 
-```{r, eval=F}
+``` r
 # build functions in R and save, builds a test file
 usethis::use_r(name="new_func")
 usethis::use_test()
@@ -58,10 +44,10 @@ devtools::check()   # checks package
 
 # Build documentation
 
-* First, update `_pkgdown.yml` with documents
-* Second, run the following steps
+-   First, update `_pkgdown.yml` with documents
+-   Second, run the following steps
 
-```{r, eval=F}
+``` r
 # Add new documentation
 usethis::use_vignette('introduction') # add a vignette
 
@@ -82,14 +68,29 @@ pkgdown::build_site()  # Build the r package documentation
 
 # Nested data
 
-The data are nested to minimize redundancy, but they can easily be unnested.
+The data are nested to minimize redundancy, but they can easily be
+unnested.
 
 Example of nested data:
-```{r, eval = T}
+
+``` r
 library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 mtcars %>%
   select(mpg, disp, am, vs) %>%
   tidyr::nest(data = c(vs, c(mpg, disp)))
+#> # A tibble: 2 × 2
+#>      am data             
+#>   <dbl> <list>           
+#> 1     1 <tibble [13 × 3]>
+#> 2     0 <tibble [19 × 3]>
 ```
 
 # Docker
@@ -97,16 +98,15 @@ mtcars %>%
 All the packages and command line tools are available using the docker
 container below.
 
-```{bash}
+``` bash
 docker pull bryanwhiting/r_env:latest
 ```
-
 
 # Github API
 
 Github api is easy to manage issues.
 
-```{bash, eval=F}
+``` bash
 gh issue create
 gh issue create --title "Some title of a new bug"
 gh issue create --label "bug"
@@ -115,5 +115,3 @@ gh issue view 4
 # Todo: parse this and re-submit
 gh issue view 4 --json body
 ```
-
-
