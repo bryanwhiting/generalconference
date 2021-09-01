@@ -1,8 +1,8 @@
-# general conference v0.3.2
+# general conference 0.3.2
 
 * Full data set, no missing titles
 
-# general conference v0.3.0
+# general conference 0.3.0
 
 * All talks back to 2019
 * Added README.rmd for introduction
