@@ -25,32 +25,32 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Suggests: 
-    knitr,
-    rmarkdown,
+    knitr (>= 1.33),
+    rmarkdown (>= 2.10),
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Imports: 
-    dplyr,
-    furrr,
-    glue,
-    purrr,
-    stringr,
-    readr,
-    rvest,
-    tictoc,
-    tidyr,
-    xml2
+    dplyr (>= 1.0.7),
+    furrr (>= 0.2.3),
+    glue (>= 1.4.2),
+    purrr (>= 0.3.4),
+    stringr (>= 1.4.0),
+    readr (>= 2.0.0),
+    rvest (>= 1.0.1),
+    tictoc (>= 1.0.1),
+    tidyr (>= 1.1.3),
+    xml2 (>= 1.3.2)
 Depends: 
-    dplyr,
-    glue,
-    furrr,
-    purrr,
-    stringr,
-    readr,
-    rvest,
-    tictoc,
-    tidyr,
-    xml2,
-    R (>= 2.10)
+    dplyr (>= 1.0.7),
+    furrr (>= 0.2.3),
+    glue (>= 1.4.2),
+    purrr (>= 0.3.4),
+    stringr (>= 1.4.0),
+    readr (>= 2.0.0),
+    rvest (>= 1.0.1),
+    tictoc (>= 1.0.1),
+    tidyr (>= 1.1.3),
+    xml2 (>= 1.3.2),
+    R (>= 4.1.1)
 Config/testthat/edition: 3
 RoxygenNote: 7.1.1
