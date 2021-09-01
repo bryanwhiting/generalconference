@@ -16,10 +16,16 @@ Starting a new package/one-time commands.
 ``` r
 devtools::create('generalconference')
 devtools::install()
-usethis::use_mit_license("My Name")
+usethis::use_mit_license("Bryan Whiting")
+usethis::use_github()
+usethis::use_github_links()
 # specify packages you want to use
 usethis::use_package('dplyr')
 usethis::use_package('rvest')
+# create files:
+usethis::use_testthat()
+usethis::use_r('newscript')
+usethis::use_test()
 # builds data-raw/ folder
 use_this::use_data_raw() 
 ```

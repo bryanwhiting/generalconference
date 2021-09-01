@@ -27,10 +27,16 @@ Starting a new package/one-time commands.
 ```{r, eval=F}
 devtools::create('generalconference')
 devtools::install()
-usethis::use_mit_license("My Name")
+usethis::use_mit_license("Bryan Whiting")
+usethis::use_github()
+usethis::use_github_links()
 # specify packages you want to use
 usethis::use_package('dplyr')
 usethis::use_package('rvest')
+# create files:
+usethis::use_testthat()
+usethis::use_r('newscript')
+usethis::use_test()
 # builds data-raw/ folder
 use_this::use_data_raw() 
 ```
@@ -45,7 +51,9 @@ usethis::use_r(name="new_func")
 usethis::use_test()
 
 # Add new package to DESCRIPTION as necessary
-usethis::use_package('xxxx'): 
+usethis::use_package('xxxx') 
+# check package version, add to DESCRIPTION
+packageVersion('xxxx')
 
 # Once function is written, load it. You'll run `load_all()` multiple times.
 devtools::load_all()
@@ -74,6 +82,9 @@ covr::report()         # run the coverage test
 devtools::test()       # run unit tests
 devtools::check()      # check the package
 devtools::build()      # build the package
+# pkgdown:
+pkgdown::build_home()  # Builds just home, including .github/ files
+pkgdown::build_reference() 
 pkgdown::build_site()  # Build the r package documentation
 ```
 
