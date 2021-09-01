@@ -19,32 +19,73 @@ knitr::opts_chunk$set(
 Saints gather to listen to church prophets, apostles, and other leaders.
 
 This package both scrapes General Conference talks and provides all talks
-in a data package. 
+in a data package for analysis in R. 
+
+
+## Install the package
+
+```{r, eval=F}
+# install.packages('devtools')
+devtools::install_github("bryanwhiting/generalconference")
+```
+
+Load the package:
 
 ```{r, message = FALSE}
 library(generalconference)
-library(dplyr)
-library(tidyr)
 ```
 
 Load the General Conference corpus, which is a tibble with nested data
 for each conference, session, talk, and paragraph.
+
 ```{r}
 data("genconf")
 head(genconf)
 ```
 
+## Getting Started
+
 Unnest it to analyze individual talks, which can be unnested further to
 the paragraph level.
 
 ```{r}
+library(dplyr)
+library(tidyr)
 genconf %>%
-  unnest(sessions) %>%
-  unnest(talks) %>%
+  tidyr::unnest(sessions) %>%
+  tidyr::unnest(talks) %>%
   head()
 ```
 
-# Getting Started
+Analyze individual paragraphs that contain the word "faith":
+
+```{r}
+library(gt)
+genconf %>%
+  # unpack/unnest the dataframe, which is a tibble of lists
+  tidyr::unnest(sessions) %>%
+  tidyr::unnest(talks) %>%
+  tidyr::unnest(paragraphs) %>%
+  # extract just the date, title, author and paragraph
+  # date, title, and author will be repeated fields, with paragraph unique
+  select(date, title1, author1, paragraph) %>%
+  # Filter to just the paragraphs that mention the word "faith"
+  filter(stringr::str_detect(paragraph, "faith")) %>%
+  # take top 5 records
+  head(5) %>%
+  # convert into a gt() table with row groups for date/title/author
+  # (use row groups since these data are replicated by paragraph)
+  group_by(date, title1, author1) %>%
+  gt() %>%
+  tab_options(
+    row_group.background.color = 'lightgray'
+  ) %>%
+  tab_header(
+    title='Paragraphs on Faith',
+    subtitle='Grouped by talk'
+  )
+```
+
 
 * See [Example Analysis](articles/example-analysis.html) for more examples on how to analyze the data.
 * See [genconf](reference/genconf.html) for a schema of the data.

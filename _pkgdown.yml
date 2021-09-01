@@ -1,7 +1,7 @@
 url: https://bryanwhiting.github.io/generalconference
 
-home:
-  strip_header: true
+# home:
+  # strip_header: true
 
 template:
   params:
