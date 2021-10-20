@@ -3,11 +3,11 @@ Type: Package
 Title: General Conference text corpus and web scrapers
 Version: 0.3.2
 Authors@R: c(
-    person("Bryan", "Whiting", email="brywhiting@gmail.com", role=c("aut", "cre", "cph"),
+    person("Bryan", "Whiting", email="seekgospelanalysis@gmail.com", role=c("aut", "cre", "cph"),
     comment = c(URL = "<https://www.bryanwhiting.com>")),
-    person("Gospel Analysis", role = c("fnd"))
+    person("Gospel Analysis", role = c("fnd"), comment = c(URL = <https://www.gospelanalysis.com>"))
     )
-Maintainer: Bryan Whiting <yourself@somewhere.net>
+Maintainer: Bryan Whiting <seekgospelanalysis@gmail.com>
 URL: https://bryanwhiting.github.io/generalconference/, https://github.com/bryanwhiting/generalconference
 BugReports: https://github.com/bryanwhiting/generalconference/issues
 Description: "General conference is the worldwide gathering of The Church of 

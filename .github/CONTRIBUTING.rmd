@@ -83,6 +83,7 @@ devtools::test()       # run unit tests
 devtools::check()      # check the package
 devtools::build()      # build the package
 # pkgdown:
+devtools::build_readme()
 pkgdown::build_home()  # Builds just home, including .github/ files
 pkgdown::build_reference() 
 pkgdown::build_site()  # Build the r package documentation
